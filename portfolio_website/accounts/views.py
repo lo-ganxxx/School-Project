@@ -6,5 +6,5 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 def login_view(request, *args, **kwargs):
     form = AuthenticationForm(request, data=request.POST or None)
     if form.is_valid():
-
+        pass
     return render(request, "form.html", {})
