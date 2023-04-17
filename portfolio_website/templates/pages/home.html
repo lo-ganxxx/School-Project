@@ -18,21 +18,23 @@ const method = 'GET' // as opposed to a POST method
 const url = "/posts"
 const responseType = "json"
 
+function formatPostElement(post) {
+    var formattedPost = "<div class='mb-4' id='post-" + post.id + "'><p>" + post.content + "</p></div>"
+    return formattedPost
+}
+
 xhr.responseType = responseType
 xhr.open(method, url)
 xhr.onload = function() {
     const serverResponse = xhr.response // like a response when you load into a webpage
     var listedItems = serverResponse.response // array (or known as a list in python)
-    var finalTweetStr = ""
+    var finalPostStr = ""
     var i;
     for (i=0;i<listedItems.length; i++) {
-        console.log(i)
-        console.log(listedItems[i])
-        var currentItem = "<div class='mb-4'><h1>" + listedItems[i].id + "</h1>" + "<p>" + listedItems[i].content + "</p></div>"
-        finalTweetStr += currentItem
+        var currentItem = formatPostElement(listedItems[i]) // listedItems[i] is the post currently being indexed
+        finalPostStr += currentItem
     }
-    postsElement.innerHTML = finalTweetStr
-    //console.log(listedItems)
+    postsElement.innerHTML = finalPostStr
 }
 xhr.send()
 
