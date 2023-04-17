@@ -1,6 +1,8 @@
 from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render
 
+import random #temp for likes
+
 from .models import Post
 # Create your views here.
 def home_view(request, *args, **kwargs):
@@ -10,7 +12,7 @@ def home_view(request, *args, **kwargs):
 
 def post_list_view(request, *args, **kwargs):
     qs = Post.objects.all()
-    posts_list = [{"id": x.id, "content": x.content} for x in qs]
+    posts_list = [{"id": x.id, "content": x.content, "likes": random.randint(0,1000)} for x in qs]
     data = {
         "isUser": False,
         "response": posts_list
