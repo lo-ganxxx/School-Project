@@ -11,5 +11,5 @@ def post_detail_view(request, post_id, *args, **kwargs):
     try:
         obj = Post.objects.get(id=post_id)
     except:
-        print("error")
-    return HttpResponse(f"<h1>Hello {post_id} - {obj.content} </h1>")
+        return HttpResponse("<h1>Error</h1>")
+    return HttpResponse(f"<h1>Hello {post_id} - {obj.content}</h1>")
