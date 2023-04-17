@@ -8,6 +8,14 @@ def home_view(request, *args, **kwargs):
     #return HttpResponse("<h1>Hello</h1>")
     return render(request, "pages/home.html", context={}, status=200)
 
+def post_list_view(request, *args, **kwargs):
+    qs = Post.objects.all()
+    posts_list = [{"id": x.id, "content": x.content} for x in qs]
+    data = {
+        "response": posts_list
+    }
+    return JsonResponse(data)
+
 def post_detail_view(request, post_id, *args, **kwargs):
     data = {
         "id": post_id,
