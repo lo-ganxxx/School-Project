@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-Welcome to Posted
+<div class='row text-center'>
+    <div class='col'>
+        <h1>Welcome to Posted</h1>
+    </div>
+</div>
 
-<div id='posts'>
+<div class='row' id='posts'>
     Loading...
 </div>
 
@@ -25,7 +29,7 @@ function LikeBtn(post) {
 }
 
 function formatPostElement(post) {
-    var formattedPost = "<div class='mb-4 post' id='post-" + post.id 
+    var formattedPost = "<div class='col-12 col-md-10 mx-auto border rounded py-3 mb-4 post' id='post-" + post.id 
     + "'><p>" + post.content + 
         "</p><div class='btn-group'>" + LikeBtn(post) + 
         "</div></div>"
@@ -39,7 +43,7 @@ xhr.onload = function() {
     var listedItems = serverResponse.response // array (or known as a list in python)
     var finalPostStr = ""
     var i;
-    for (i=0;i<listedItems.length; i++) {
+    for (i=0;i<listedItems.length;i++) {
         var currentItem = formatPostElement(listedItems[i]) // listedItems[i] is the post currently being indexed
         finalPostStr += currentItem
     }
