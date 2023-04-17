@@ -12,6 +12,7 @@ def post_list_view(request, *args, **kwargs):
     qs = Post.objects.all()
     posts_list = [{"id": x.id, "content": x.content} for x in qs]
     data = {
+        "isUser": False,
         "response": posts_list
     }
     return JsonResponse(data)
