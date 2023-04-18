@@ -1,5 +1,5 @@
 from django.http import HttpResponse, Http404, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 import random #temp for likes
 
@@ -13,9 +13,12 @@ def home_view(request, *args, **kwargs):
 
 def create_post(request, *args, **kwargs):
     form = PostForm(request.POST or None) #this means that if the request is not a POST but instead a GET (e.g. loading up the page initially), it is a fallback value so that it doesnt just submit no data
+    next_url = request.POST.get("next") or None #getting the next url from the POST request or just None if it was not declared
     if form.is_valid(): #if form doesnt return a ValidationError
         obj = form.save(commit=False) #creates a new Post object with the form data by calling the save() method on the form, passing in commit=False to prevent it from immediately being saved to the database
         obj.save() #saves the Post object to database
+        if next_url != None: #If there is a next url declared
+            return redirect(next_url) #Redirect user to that url
         form = PostForm #clears the form for next submitting
     return render(request, "components/form.html", context={"form": form})
 
