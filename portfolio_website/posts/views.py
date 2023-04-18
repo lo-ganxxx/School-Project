@@ -12,11 +12,11 @@ def home_view(request, *args, **kwargs):
     return render(request, "pages/home.html", context={}, status=200)
 
 def create_post(request, *args, **kwargs):
-    form = PostForm(request.POST or None)
-    if form.is_valid():
-        obj = form.save(commit=False)
-        obj.save()
-        form = PostForm
+    form = PostForm(request.POST or None) #this means that if the request is not a POST but instead a GET (e.g. loading up the page initially), it is a fallback value so that it doesnt just submit no data
+    if form.is_valid(): #if form doesnt return a ValidationError
+        obj = form.save(commit=False) #creates a new Post object with the form data by calling the save() method on the form, passing in commit=False to prevent it from immediately being saved to the database
+        obj.save() #saves the Post object to database
+        form = PostForm #clears the form for next submitting
     return render(request, "components/form.html", context={"form": form})
 
 def post_list_view(request, *args, **kwargs):
