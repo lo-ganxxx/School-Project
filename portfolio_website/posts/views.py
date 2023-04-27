@@ -1,5 +1,9 @@
+from django.conf import settings 
 from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect
+from django.utils.http import url_has_allowed_host_and_scheme #is_safe_url (renamed)
+
+ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
 import random #temp for likes
 
@@ -17,7 +21,7 @@ def create_post(request, *args, **kwargs):
     if form.is_valid(): #if form doesnt return a ValidationError
         obj = form.save(commit=False) #creates a new Post object with the form data by calling the save() method on the form, passing in commit=False to prevent it from immediately being saved to the database
         obj.save() #saves the Post object to database
-        if next_url != None: #If there is a next url declared
+        if next_url != None and url_has_allowed_host_and_scheme(next_url, ALLOWED_HOSTS): #If there is a next url declared
             return redirect(next_url) #Redirect user to that url
         form = PostForm #clears the form for next submitting
     return render(request, "components/form.html", context={"form": form})
