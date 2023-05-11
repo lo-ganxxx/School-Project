@@ -14,6 +14,7 @@
             <input type='hidden' value='/' name='next' />
             <textarea class='form-control' name='content' placeholder='Your post...'></textarea>
             <button type='submit' class='btn btn-primary'>Submit</button>
+        </form>
     </div>
 </div>
 
@@ -23,13 +24,11 @@
 
 <script>
 
-{% comment %} function handlePostCreateFormDidSubmit(event) {
+function handlePostCreateFormDidSubmit(event) {
     event.preventDefault()
 }
-
 const postCreateFormEl = document.getElementById("post-create-form")
-
-postCreatFormEl.addEventListener("submit", handlePostCreateFormDidSubmit) // listening for the event on the tweet create form element of it being submitted, and when this event occurs call the handlePostCreateFormDidSubmit function {% endcomment %}
+postCreateFormEl.addEventListener("submit", handlePostCreateFormDidSubmit) // listening for the event on the tweet create form element of it being submitted, and when this event occurs call the handlePostCreateFormDidSubmit function
 
 const postsEl = document.getElementById("posts") // get an HTML element
 //postsElement.innerHTML = 'Loading...' // set new html in that element
