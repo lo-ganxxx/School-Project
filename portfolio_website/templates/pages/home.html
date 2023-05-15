@@ -26,6 +26,19 @@
 
 function handlePostCreateFormDidSubmit(event) {
     event.preventDefault()
+    const myForm = event.target
+    const myFormData = new FormData(myForm)
+    const url = myForm.getAttribute("action")
+    const method = myForm.getAttribute("method")
+    const xhr = new XMLHttpRequest()
+    xhr.open(method, url)
+    xhr.onload = function() {
+        const serverResponse = xhr.response
+        //console.log(serverResponse)
+        const postsEl = document.getElementById("posts")
+        loadPosts(postsEl)
+    }
+    xhr.send(myFormData)
 }
 const postCreateFormEl = document.getElementById("post-create-form")
 postCreateFormEl.addEventListener("submit", handlePostCreateFormDidSubmit) // listening for the event on the tweet create form element of it being submitted, and when this event occurs call the handlePostCreateFormDidSubmit function
