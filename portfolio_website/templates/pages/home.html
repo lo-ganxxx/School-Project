@@ -12,7 +12,7 @@
         <form class='form' id='post-create-form' method='POST' action='/create'>
             {% csrf_token %}
             <input type='hidden' value='/' name='next' />
-            <textarea class='form-control' name='content' placeholder='Your post...'></textarea>
+            <textarea required='required' class='form-control' name='content' placeholder='Your post...'></textarea>
             <button type='submit' class='btn btn-primary'>Submit</button>
         </form>
     </div>
@@ -39,9 +39,11 @@ function handlePostCreateFormDidSubmit(event) {
     xhr.onload = function() { //What will be done once the XMLHttpRequest transaction completes successfully
         if (xhr.status === 201) {
             const newPostJson = xhr.response
-            //const newPostJson = JSON.parse(newPost)
+            //const newPostJson = JSON.parse(newPost) - other way of making data json
             const newPostElement = formatPostElement(newPostJson)
-            console.log(newPostElement)
+            const ogHtml = postsContainerElement.innerHTML
+            postsContainerElement.innerHTML = newPostElement + ogHtml // Renders new post to existing list at posts (at top)
+            myForm.reset() //Resets form so that it is empty and ready to type in a new post
         }
     }
     xhr.send(myFormData)
