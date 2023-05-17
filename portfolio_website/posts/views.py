@@ -27,6 +27,9 @@ def create_post(request, *args, **kwargs):
         if next_url != None and url_has_allowed_host_and_scheme(next_url, ALLOWED_HOSTS): #If there is a next url declared
             return redirect(next_url) #Redirect user to that url
         form = PostForm #clears the form for next submitting
+    if form.errors:
+        if is_ajax(request=request):
+            return JsonResponse(form.errors, status=400)
     return render(request, "components/form.html", context={"form": form})
 
 def post_list_view(request, *args, **kwargs):

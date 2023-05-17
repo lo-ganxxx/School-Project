@@ -11,6 +11,7 @@
     <div class='col-md-4 mx-auto col-10'>
         <form class='form' id='post-create-form' method='POST' action='/create'>
             {% csrf_token %}
+            <div class='d-none alert-danger' id='post-create-form-error'></div>
             <input type='hidden' value='/' name='next' />
             <textarea required='required' class='form-control' name='content' placeholder='Your post...'></textarea>
             <button type='submit' class='btn btn-primary'>Submit</button>
@@ -24,6 +25,18 @@
 
 <script>
 
+function handlePostFormError(msg,display) {
+    var myErrorDiv = document.getElementById("post-create-form-error")
+    if (display === true) {
+        // show error
+        myErrorDiv.setAttribute("class", "d-block alert alert-danger") //Changes the class so the div is no longer hidden
+        myErrorDiv.innerText = msg
+    } else {
+        // hide error
+        myErrorDiv.setAttribute("class", "d-none alert alert-danger") //Changes the class so the div is now hidden
+    }
+}
+
 function handlePostCreateFormDidSubmit(event) {
     event.preventDefault() //Prevents the default action of submitting the data from happening
     const myForm = event.target //Variable of the form being submitted
@@ -36,15 +49,37 @@ function handlePostCreateFormDidSubmit(event) {
     xhr.open(method, url)
     xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest") //Setting request headers so that it can be recognized by is_ajax function
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
-    xhr.onload = function() { //What will be done once the XMLHttpRequest transaction completes successfully
+    xhr.onload = function() { //What will be done once the XMLHttpRequest transaction completes successfully (all frontend stuff, just rendering the new post to post list)
         if (xhr.status === 201) {
+            handlePostFormError("", false)
             const newPostJson = xhr.response
             //const newPostJson = JSON.parse(newPost) - other way of making data json
             const newPostElement = formatPostElement(newPostJson)
             const ogHtml = postsContainerElement.innerHTML
             postsContainerElement.innerHTML = newPostElement + ogHtml // Renders new post to existing list at posts (at top)
             myForm.reset() //Resets form so that it is empty and ready to type in a new post
+        } else if (xhr.status === 400) {
+            const errorJson = xhr.response //The JsonResponse from create_post function when there is a form.errors
+            console.log(errorJson)
+            const contentError = errorJson.content
+            let contentErrorMsg;
+            if (contentError) {
+                contentErrorMsg = contentError [0] //First element of the array is the error message
+                if (contentErrorMsg) {
+                    handlePostFormError(contentErrorMsg, true)
+                } else {
+                    alert("An error occured, please try again.")
+                }
+            } else {
+                alert("An error occured, please try again.")
+            }
+            console.log(contentErrorMsg)
+        } else if (xhr.status === 500) { //Status 500 is internal server error, e.g. error in code
+            alert("There was a server error, please try again.")
         }
+    }
+    xhr.onerror = function() { //Error on javascript side
+        alert("An error occured. Please try again later.")
     }
     xhr.send(myFormData)
 }
