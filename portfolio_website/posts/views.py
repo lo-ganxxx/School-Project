@@ -13,14 +13,21 @@ from .models import Post
 def home_view(request, *args, **kwargs):
     #print(args, kwargs)
     #return HttpResponse("<h1>Hello</h1>")
+    print(request.user)
     return render(request, "pages/home.html", context={}, status=200)
 
 def create_post(request, *args, **kwargs):
-    print("ajax", is_ajax(request=request))
+    user = request.user
+    if not request.user.is_authenticated: #Anonymous user
+        user = None
+        if is_ajax(request=request):
+            return JsonResponse({}, status=401)
+        return redirect(settings.LOGIN_URL)
     form = PostForm(request.POST or None) #this means that if the request is not a POST but instead a GET (e.g. loading up the page initially), it is a fallback value so that it doesnt just submit no data
     next_url = request.POST.get("next") or None #getting the next url from the POST request or just None if it was not declared
     if form.is_valid(): #if form doesnt return a ValidationError
         obj = form.save(commit=False) #creates a new Post object with the form data by calling the save() method on the form, passing in commit=False to prevent it from immediately being saved to the database
+        obj.user = user
         obj.save() #saves the Post object to database
         if is_ajax(request=request):
             return JsonResponse(obj.serialize(), status=201) # 201 == created post
