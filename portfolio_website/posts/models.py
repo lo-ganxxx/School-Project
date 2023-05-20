@@ -20,5 +20,6 @@ class Post(models.Model):
         return {
             "id": self.id,
             "content": self.content,
-            "likes": random.randint(0,200)
+            "likes": random.randint(0,200),
+            "creator": self.user.username
         }
