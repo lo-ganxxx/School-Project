@@ -1,8 +1,9 @@
+from django.conf import settings
 from django import forms
 
 from .models import Post
 
-MAX_POST_LENGTH = 240
+MAX_POST_LENGTH = settings.MAX_POST_LENGTH
 
 class PostForm(forms.ModelForm):
     class Meta:

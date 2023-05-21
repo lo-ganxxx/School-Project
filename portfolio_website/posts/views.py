@@ -3,12 +3,16 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.http import url_has_allowed_host_and_scheme #is_safe_url (renamed)
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
 import random #temp for likes
 
 from .forms import PostForm
 from .models import Post
+from .serializers import PostSerializer
 # Create your views here.
 def home_view(request, *args, **kwargs):
     #print(args, kwargs)
@@ -16,7 +20,30 @@ def home_view(request, *args, **kwargs):
     print(request.user)
     return render(request, "pages/home.html", context={}, status=200)
 
+@api_view(['POST']) #http method that the client has to send has to be POST
 def create_post(request, *args, **kwargs):
+    serializer = PostSerializer(data=request.POST) #uses data from the POST request
+    if serializer.is_valid(raise_exception=True): #if form doesnt return a ValidationError from validate_content function in PostSerializer class
+        serializer.save(user = request.user) #save the Post object to database with user set as the POST requests user
+        return Response(serializer.data, status=201)
+    return Response({}, status=400)
+
+@api_view(['GET']) #http method that the client has to send has to be GET
+def post_list_view(request, *args, **kwargs):
+    qs = Post.objects.all()
+    serializer = PostSerializer(qs, many=True)
+    return Response(serializer.data, status=200)
+
+@api_view(['GET'])
+def post_detail_view(request, post_id, *args, **kwargs):
+    qs = Post.objects.filter(id=post_id) #Finds the post by its ID
+    if not qs.exists():
+        return Response({}, status=404)
+    obj = qs.first()
+    serializer = PostSerializer(obj)
+    return Response(serializer.data, status=200)
+
+def create_post_pure_django(request, *args, **kwargs):
     user = request.user
     if not request.user.is_authenticated: #Anonymous user
         user = None
@@ -39,7 +66,7 @@ def create_post(request, *args, **kwargs):
             return JsonResponse(form.errors, status=400)
     return render(request, "components/form.html", context={"form": form})
 
-def post_list_view(request, *args, **kwargs):
+def post_list_view_pure_django(request, *args, **kwargs):
     qs = Post.objects.all()
     posts_list = [x.serialize() for x in qs]
     data = {
@@ -48,7 +75,7 @@ def post_list_view(request, *args, **kwargs):
     }
     return JsonResponse(data)
 
-def post_detail_view(request, post_id, *args, **kwargs):
+def post_detail_view_pure_django(request, post_id, *args, **kwargs):
     data = {
         "id": post_id,
         #"image_path": obj.image.url

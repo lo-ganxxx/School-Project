@@ -99,7 +99,7 @@ function loadPosts(postsElement) {
     xhr.open(method, url)
     xhr.onload = function() {
         const serverResponse = xhr.response // like a response when you load into a webpage
-        var listedItems = serverResponse.response // array (or known as a list in python)
+        const listedItems = serverResponse // array (or known as a list in python)
         var finalPostStr = ""
         var i;
         for (i=0;i<listedItems.length;i++) {
