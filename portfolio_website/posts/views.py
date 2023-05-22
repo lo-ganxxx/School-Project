@@ -3,7 +3,9 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.http import url_has_allowed_host_and_scheme #is_safe_url (renamed)
 
-from rest_framework.decorators import api_view
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
@@ -20,7 +22,10 @@ def home_view(request, *args, **kwargs):
     print(request.user)
     return render(request, "pages/home.html", context={}, status=200)
 
+#these requirements for a function to run like e.g. @api_view are called decorators
 @api_view(['POST']) #http method that the client has to send has to be POST
+# @authentication_classes([SessionAuthentication]) #the type of authentication allowed
+@permission_classes([IsAuthenticated]) #only works if request is from an authenticated user
 def create_post(request, *args, **kwargs):
     serializer = PostSerializer(data=request.POST) #uses data from the POST request
     if serializer.is_valid(raise_exception=True): #if form doesnt return a ValidationError from validate_content function in PostSerializer class
