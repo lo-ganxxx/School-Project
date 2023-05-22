@@ -48,6 +48,19 @@ def post_detail_view(request, post_id, *args, **kwargs):
     serializer = PostSerializer(obj)
     return Response(serializer.data, status=200)
 
+@api_view(['DELETE', 'POST'])
+@permission_classes([IsAuthenticated])
+def post_delete_view(request, post_id, *args, **kwargs):
+    qs = Post.objects.filter(id=post_id) #Finds the post by its ID
+    if not qs.exists():
+        return Response({}, status=404)
+    qs.filter(user=request.user)
+    if not qs.exists():
+        return Response({"message": "You cannot delete this post"}, status=401)
+    obj = qs.first()
+    obj.delete()
+    return Response({"message": "Post removed"}, status=200)
+
 def create_post_pure_django(request, *args, **kwargs):
     user = request.user
     if not request.user.is_authenticated: #Anonymous user
