@@ -68,7 +68,7 @@ def post_action_view(request, post_id, *args, **kwargs):
     id is required.
     Action options are: like, unlike -> these actions are seperate and not toggled to prevent accidental unliking/reliking if lag on frontend
     '''
-    serializer = PostActionSerializer(request.POST)
+    serializer = PostActionSerializer(data=request.POST)
     if serializer.is_valid(raise_exception=True):
         data = serializer.validated_data
         post_id = data.get("id")
