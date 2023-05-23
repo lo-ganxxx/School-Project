@@ -27,7 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 LOGIN_URL = "/login"
+
 MAX_POST_LENGTH = 240
+POST_ACTION_OPTIONS = ["like", "unlike"]
 
 # Application definition
 

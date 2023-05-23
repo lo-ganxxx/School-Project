@@ -14,7 +14,7 @@ import random #temp for likes
 
 from .forms import PostForm
 from .models import Post
-from .serializers import PostSerializer
+from .serializers import PostSerializer, PostActionSerializer
 # Create your views here.
 def home_view(request, *args, **kwargs):
     #print(args, kwargs)
@@ -60,6 +60,28 @@ def post_delete_view(request, post_id, *args, **kwargs):
     obj = qs.first()
     obj.delete()
     return Response({"message": "Post removed"}, status=200)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def post_action_view(request, post_id, *args, **kwargs):
+    '''
+    id is required.
+    Action options are: like, unlike -> these actions are seperate and not toggled to prevent accidental unliking/reliking if lag on frontend
+    '''
+    serializer = PostActionSerializer(request.POST)
+    if serializer.is_valid(raise_exception=True):
+        data = serializer.validated_data
+        post_id = data.get("id")
+        action = data.get("action")
+        qs = Post.objects.filter(id=post_id) #Finds the post by its ID
+        if not qs.exists():
+            return Response({}, status=404)
+        obj = qs.first()
+        if action == "like":
+            obj.likes.add(request.user)
+        elif action == "unlike":
+            obj.likes.remove(request.user)
+    return Response({"message": "Action complete"}, status=200)
 
 def create_post_pure_django(request, *args, **kwargs):
     user = request.user

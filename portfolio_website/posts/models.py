@@ -13,7 +13,7 @@ class PostLike(models.Model):
 class Post(models.Model):
     #id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE) #one user can have many posts, if user is deleted, all their posts are deleted too
-    likes = models.ManyToManyField(User, related_name='post_user', blank=True, through=PostLike) #one post can have many users and many users can have many posts (in relation to likes)
+    likes = models.ManyToManyField(User, related_name='post_user', blank=True, through=PostLike) #one post can have many users and many users can have many posts (in relation to likes) -- kind of as if for every like it creates a new object documenting that like and what user did it
     content = models.TextField(blank=True, null=True)
     image = models.FileField(upload_to="images/", blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
