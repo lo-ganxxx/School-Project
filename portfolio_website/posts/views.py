@@ -63,12 +63,12 @@ def post_delete_view(request, post_id, *args, **kwargs):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def post_action_view(request, post_id, *args, **kwargs):
+def post_action_view(request, *args, **kwargs):
     '''
     id is required.
     Action options are: like, unlike -> these actions are seperate and not toggled to prevent accidental unliking/reliking if lag on frontend
     '''
-    serializer = PostActionSerializer(data=request.POST)
+    serializer = PostActionSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         data = serializer.validated_data
         post_id = data.get("id")
@@ -78,10 +78,14 @@ def post_action_view(request, post_id, *args, **kwargs):
             return Response({}, status=404)
         obj = qs.first()
         if action == "like":
-            obj.likes.add(request.user)
+            obj.likes.add(request.user) #adds a like from the user making the request
+            serializer = PostSerializer(obj)
+            return Response(serializer.data, status=200)
         elif action == "unlike":
             obj.likes.remove(request.user)
-    return Response({"message": "Action complete"}, status=200)
+        elif action == "comment":
+            pass #add later
+    return Response({}, status=200)
 
 def create_post_pure_django(request, *args, **kwargs):
     user = request.user
