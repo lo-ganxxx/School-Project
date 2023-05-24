@@ -4,6 +4,12 @@ import random
 
 User = settings.AUTH_USER_MODEL
 
+class PostComment(models.Model): #done without tutorial
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey("Post", on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    content = models.CharField(max_length=255, blank=True, null=True)
+
 class PostLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey("Post", on_delete=models.CASCADE)
@@ -17,6 +23,7 @@ class Post(models.Model):
     content = models.TextField(blank=True, null=True)
     image = models.FileField(upload_to="images/", blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    comments = models.ManyToManyField(User, related_name="post_commented_on", blank=True, through=PostComment) #related_name field lets you access foreign keys defined in your Django models backwards - e.g. you could find all comments by doing
 
     def __str__(self):
         return "Post ID: " + str(self.id)
@@ -27,6 +34,6 @@ class Post(models.Model):
         return {
             "id": self.id,
             "content": self.content,
-            "likes": random.randint(0,200),
+            "likes": self.likes.count(),
             "creator": self.user.username
         }

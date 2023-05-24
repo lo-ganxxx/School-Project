@@ -13,7 +13,7 @@ ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 import random #temp for likes
 
 from .forms import PostForm
-from .models import Post
+from .models import Post, PostComment
 from .serializers import PostSerializer, PostActionSerializer
 # Create your views here.
 def home_view(request, *args, **kwargs):
@@ -83,8 +83,14 @@ def post_action_view(request, *args, **kwargs):
             return Response(serializer.data, status=200)
         elif action == "unlike":
             obj.likes.remove(request.user)
-        elif action == "comment":
-            pass #add later
+        elif action == "comment": #need to make a way to type stuff
+            new_comment = PostComment.objects.create(
+                user=request.user,
+                post=obj,
+                content="test comment"
+            )
+            print(obj.comments.all())
+            #return Response(serializer.data, status=200)
     return Response({}, status=200)
 
 def create_post_pure_django(request, *args, **kwargs):
