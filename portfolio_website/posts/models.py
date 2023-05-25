@@ -4,11 +4,16 @@ import random
 
 User = settings.AUTH_USER_MODEL
 
-class PostComment(models.Model): #done without tutorial
+class PostComment(models.Model): #all me
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey("Post", on_delete=models.CASCADE)
+    post = models.ForeignKey("Post", on_delete=models.CASCADE, related_name="comments")
     timestamp = models.DateTimeField(auto_now_add=True)
-    content = models.CharField(max_length=255, blank=True, null=True)
+    content = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return "Comment '{}' by {}".format(self.content, self.user.username)
+    class Meta:
+        ordering = ['-id']
 
 class PostLike(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -23,17 +28,17 @@ class Post(models.Model):
     content = models.TextField(blank=True, null=True)
     image = models.FileField(upload_to="images/", blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
-    comments = models.ManyToManyField(User, related_name="post_commented_on", blank=True, through=PostComment) #related_name field lets you access foreign keys defined in your Django models backwards - e.g. you could find all comments by doing
+    #comments = models.ManyToManyField(User, related_name="post_commented_on", blank=True, through=PostComment) #related_name field lets you access foreign keys defined in your Django models backwards - e.g. you could find all comments by doing
 
     def __str__(self):
         return "Post ID: " + str(self.id)
     class Meta:
         ordering = ['-id']
 
-    def serialize(self):
-        return {
-            "id": self.id,
-            "content": self.content,
-            "likes": self.likes.count(),
-            "creator": self.user.username
-        }
+    # def serialize(self):
+    #     return {
+    #         "id": self.id,
+    #         "content": self.content,
+    #         "likes": self.likes.count(),
+    #         "creator": self.user.username
+    #     } not needed anymore
