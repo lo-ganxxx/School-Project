@@ -84,6 +84,8 @@ def post_action_view(request, *args, **kwargs):
             return Response(serializer.data, status=200)
         elif action == "unlike":
             obj.likes.remove(request.user)
+            serializer = PostSerializer(obj)
+            return Response(serializer.data, status=200)
         elif action == "comment": #need to make a way to type stuff
             new_comment = PostComment.objects.create(
                 user=request.user,
@@ -91,7 +93,8 @@ def post_action_view(request, *args, **kwargs):
                 content=content
             )
             print(obj.comments.all())
-            #return Response(serializer.data, status=200)
+            serializer = PostSerializer(obj)
+            return Response(serializer.data, status=201)
     return Response({}, status=200)
 
 def create_post_pure_django(request, *args, **kwargs):
