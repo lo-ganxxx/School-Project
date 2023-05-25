@@ -14,7 +14,7 @@ import random #temp for likes
 
 from .forms import PostForm
 from .models import Post, PostComment
-from .serializers import PostSerializer, PostActionSerializer
+from .serializers import PostSerializer, PostActionSerializer, PostCreateSerializer
 # Create your views here.
 def home_view(request, *args, **kwargs):
     #print(args, kwargs)
@@ -26,8 +26,8 @@ def home_view(request, *args, **kwargs):
 @api_view(['POST']) #http method that the client has to send has to be POST
 # @authentication_classes([SessionAuthentication]) #the type of authentication allowed
 @permission_classes([IsAuthenticated]) #only works if request is from an authenticated user
-def create_post(request, *args, **kwargs):
-    serializer = PostSerializer(data=request.POST) #uses data from the POST request
+def post_create_view(request, *args, **kwargs):
+    serializer = PostCreateSerializer(data=request.POST) #uses data from the POST request
     if serializer.is_valid(raise_exception=True): #if form doesnt return a ValidationError from validate_content function in PostSerializer class
         serializer.save(user = request.user) #save the Post object to database with user set as the POST requests user
         return Response(serializer.data, status=201)
@@ -73,6 +73,7 @@ def post_action_view(request, *args, **kwargs):
         data = serializer.validated_data
         post_id = data.get("id")
         action = data.get("action")
+        content = data.get("content")
         qs = Post.objects.filter(id=post_id) #Finds the post by its ID
         if not qs.exists():
             return Response({}, status=404)
@@ -87,7 +88,7 @@ def post_action_view(request, *args, **kwargs):
             new_comment = PostComment.objects.create(
                 user=request.user,
                 post=obj,
-                content="test comment"
+                content=content
             )
             print(obj.comments.all())
             #return Response(serializer.data, status=200)
