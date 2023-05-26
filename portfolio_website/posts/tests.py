@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from rest_framework.test import APIClient
 
-from .models import Post
+from .models import Post, PostComment
 # Create your tests here.
 User = get_user_model()
 
@@ -14,6 +14,8 @@ class PostTestCase(TestCase):
         Post.objects.create(content="my second post", user=self.user)
         Post.objects.create(content="my third post", user=self.user)
         Post.objects.create(content="my fourth post", user=self.user)
+        self.commentCurrentCount = PostComment.objects.all().count()
+        self.postCurrentCount = Post.objects.all().count()
     
     def test_post_created(self):
         post_obj = Post.objects.create(content="my fifth post", user=self.user)
@@ -51,9 +53,20 @@ class PostTestCase(TestCase):
     
     def test_action_comment(self):
         client = self.get_client()
+        current_count = self.commentCurrentCount
         response = client.post("/api/posts/action/", {"id": 3, "action": "comment"})
         print(response.json())
         data = response.json().get("comments")[-1] #gets the dictionary containing keys and values of the most recent comment on the post
         new_comment_id = data['id'] #id of the most recent comment on the post
         self.assertEqual(response.status_code, 201)
-        self.assertEqual(new_comment_id, 1) #should be the first comment made
+        self.assertEqual(current_count + 1, new_comment_id) #should have a new id
+
+    def test_post_create_api_view(self):
+        request_data = {"content": "This is my test post"}
+        client = self.get_client()
+        current_count = self.postCurrentCount
+        response = client.post("/api/posts/create/", request_data)
+        self.assertEqual(response.status_code, 201)
+        response_data = response.json()
+        new_post_id = response_data.get("id")
+        self.assertEqual(current_count + 1, new_post_id)

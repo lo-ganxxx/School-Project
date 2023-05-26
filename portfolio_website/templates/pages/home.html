@@ -25,7 +25,7 @@
 
 <script>
 
-function getCookie(name) {
+function getCookie(name) { //for csrf token cookie
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
@@ -135,7 +135,7 @@ loadPosts(postsContainerElement)
 
 function handlePostAction(post_id, currentCount, action) {
     console.log(post_id, currentCount)
-    const url = "/api/posts/action"
+    const url = "/api/posts/action/"
     const method = "POST"
     const data = JSON.stringify({ //makes it a json dictionary
         id: post_id,
