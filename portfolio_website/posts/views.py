@@ -54,7 +54,7 @@ def post_delete_view(request, post_id, *args, **kwargs):
     qs = Post.objects.filter(id=post_id) #Finds the post by its ID
     if not qs.exists():
         return Response({}, status=404)
-    qs.filter(user=request.user)
+    qs = qs.filter(user=request.user)
     if not qs.exists():
         return Response({"message": "You cannot delete this post"}, status=401)
     obj = qs.first()

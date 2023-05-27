@@ -10,10 +10,11 @@ User = get_user_model()
 class PostTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='abc', password='somepassword')
+        self.userb = User.objects.create_user(username='abc-2', password='somepassword2')
         Post.objects.create(content="my first post", user=self.user)
         Post.objects.create(content="my second post", user=self.user)
-        Post.objects.create(content="my third post", user=self.user)
-        Post.objects.create(content="my fourth post", user=self.user)
+        Post.objects.create(content="my third post", user=self.userb)
+        Post.objects.create(content="my fourth post", user=self.userb)
         self.commentCurrentCount = PostComment.objects.all().count()
         self.postCurrentCount = Post.objects.all().count()
     
@@ -70,3 +71,21 @@ class PostTestCase(TestCase):
         response_data = response.json()
         new_post_id = response_data.get("id")
         self.assertEqual(current_count + 1, new_post_id)
+
+    def test_post_detail_api_view(self):
+        client = self.get_client()
+        response = client.get("/api/posts/1/")
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        _id = data.get("id")
+        self.assertEqual(_id, 1)
+
+    def test_post_delete_api_view(self):
+        client = self.get_client()
+        response = client.delete("/api/posts/1/delete/")
+        self.assertEqual(response.status_code, 200)
+        client = self.get_client()
+        response = client.delete("/api/posts/1/delete/")
+        self.assertEqual(response.status_code, 404)
+        response_incorrect_owner = client.delete("/api/posts/3/delete/") #post by different user
+        self.assertEqual(response_incorrect_owner.status_code, 401) #401 - unauthorized (post is not theirs to delete)
