@@ -2,12 +2,36 @@ import {useEffect, useState} from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+function loadPosts(callback) {
+  const xhr = new XMLHttpRequest() // this is javascript! in python would be something like xhr = SomeClass() -- basically making new instance of a class
+  const method = 'GET' // as opposed to a POST method
+  const url = "http://127.0.0.1:8000/api/posts/"
+  const responseType = "json"
+
+  xhr.responseType = responseType
+  xhr.open(method, url)
+  xhr.onload = function() {
+      callback(xhr.response, xhr.status)
+  }
+  xhr.onerror = function (e) {
+    console.log(e)
+    callback({"message": "The request was an error"}, 400)
+  }
+  xhr.send()
+}
+
 function App() {
-  const [post, setPosts] = useState([])
+  const [posts, setPosts] = useState([])
   useEffect(() => {
     // do my lookup
-    const postItems = [{"content": 123}, {"content": "hello world"}]
-    setPosts(postItems)
+    const myCallback = (response, status) => {
+      if (status === 200){
+        setPosts(response)
+      } else {
+        alert("There was an error")
+      }
+    }
+    loadPosts(myCallback)
   }, [])
   return (
     <div className="App">
@@ -17,7 +41,7 @@ function App() {
           Edit <code>src/App.js</code> and save to reload.
         </p>
         <p>
-          {postMessage.map((post, index)=>{
+          {posts.map((post, index)=>{
             return <li>{post.content}</li>
           })}
         </p>
