@@ -5,7 +5,7 @@ import './App.css';
 function loadPosts(callback) {
   const xhr = new XMLHttpRequest() // this is javascript! in python would be something like xhr = SomeClass() -- basically making new instance of a class
   const method = 'GET' // as opposed to a POST method
-  const url = "http://127.0.0.1:8000/api/posts/"
+  const url = "http://localhost:8000/api/posts/"
   const responseType = "json"
 
   xhr.responseType = responseType

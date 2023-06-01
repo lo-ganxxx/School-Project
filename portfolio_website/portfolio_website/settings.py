@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-cex0gdak9&t9vv%kec1jgbd*%xrxc%8cjb=m19@8-ku7_otg$t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 LOGIN_URL = "/login"
 
 MAX_POST_LENGTH = 240
