@@ -20,6 +20,14 @@ function loadPosts(callback) {
   xhr.send()
 }
 
+function Post(props) {
+  const {post} = props
+  const className = props.className ? props.className : 'col-10 max-auto col-md-6'
+  return <div className={className}>
+    <p>{post.content} - {post.id}</p>
+  </div>
+}
+
 function App() {
   const [posts, setPosts] = useState([])
   useEffect(() => {
@@ -40,11 +48,11 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        <p>
-          {posts.map((post, index)=>{
-            return <li>{post.content}</li>
+        <div>
+          {posts.map((item, index)=>{
+            return <Post post={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-{item.id}`} />
           })}
-        </p>
+        </div>
         <a
           className="App-link"
           href="https://reactjs.org"
