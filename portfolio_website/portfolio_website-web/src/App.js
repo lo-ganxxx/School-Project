@@ -7,9 +7,9 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <img src="https://media.tenor.com/67LIumILNRsAAAAd/ltg-low-tier-god.gif" className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Welcome to Posted's <code>ReactJS</code> testing page.
         </p>
         <div>
           <PostsList />

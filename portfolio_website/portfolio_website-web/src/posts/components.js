@@ -23,7 +23,15 @@ export function PostsList(props) {
 export function ActionBtn(props) {
     const {post, action} = props //takes the post
     const className = props.className ? props.className : 'btn btn-primary btn-small'
-    return action.type === 'like' ? <button className={className}>{post.likes} Likes</button> : null
+    const actionDisplay = action.display ? action.display : 'Action' // the display of the button
+    const display = action.type === 'like' ? `${post.likes} ${actionDisplay}` : actionDisplay // setting what the button says depending on the type of action set in props
+    const handleClick = (event) => {
+      event.preventDefault()
+      if (action.type === 'like') {
+        console.log(post.likes + 1)
+      } 
+    }
+    return <button className={className} onClick={handleClick}>{display}</button> //button with the previously set class and when clicked will trigger the handleClick function
   }
   
 export function Post(props) {
@@ -32,9 +40,9 @@ export function Post(props) {
     return <div className={className}>
       <p>{post.content} - {post.id}</p>
       <div className = 'btn btn-group'>
-        <ActionBtn post={post} action={{type: "like"}}/>
-        <ActionBtn post={post} action={{type: "unlike"}}/>
-        <ActionBtn post={post} action={{type: "comment"}}/>
+        <ActionBtn post={post} action={{type: "like", display: "Likes"}}/>
+        <ActionBtn post={post} action={{type: "unlike", display: "Unlike"}}/>
+        <ActionBtn post={post} action={{type: "comment", display: "Comment"}}/>
       </div>
     </div>
   }
