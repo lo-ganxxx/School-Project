@@ -1,6 +1,27 @@
-import {useEffect, useState} from 'react'
+import {createRef, useEffect, useState} from 'react'
 
 import {loadPosts} from '../lookup' //two dots because it needs to go up a level in file directory to look for that component called lookup
+
+export function PostsComponent(props) {
+  const textAreaRef = createRef() //reference for the text area
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const newVal = textAreaRef.current.value
+    console.log(newVal) //the text being submitted (to post)
+    textAreaRef.current.value = '' //clear the text box
+  }
+  return <div className={props.className}>
+    <div className='col-md-4 mx-auto col-10'>
+      <form onSubmit={handleSubmit}>
+        <textarea ref={textAreaRef} required={true} className='form-control' name='post'>
+
+        </textarea>
+        <button type='submit' className='btn btn-primary my-3'>Post</button>
+    </form>
+    </div>
+  <PostsList />
+  </div>
+}
 
 export function PostsList(props) {
     const [posts, setPosts] = useState([])
@@ -22,15 +43,24 @@ export function PostsList(props) {
 
 export function ActionBtn(props) {
     const {post, action} = props //takes the post
+    const [likes, setLikes] = useState(post.likes ? post.likes : 0) // const [state, setState] = useState(initialValue)
+    // here the (post.likes ? post.likes : 0) is the value to start with, and likes is the current likes value that can be used in the component. The setLikes function can be used to update the likes, triggering a re-render of the component.
+    const [userLike, setUserLike] = useState(post.userLike === true ? true : false)
     const className = props.className ? props.className : 'btn btn-primary btn-small'
     const actionDisplay = action.display ? action.display : 'Action' // the display of the button
-    const display = action.type === 'like' ? `${post.likes} ${actionDisplay}` : actionDisplay // setting what the button says depending on the type of action set in props
     const handleClick = (event) => {
       event.preventDefault()
       if (action.type === 'like') {
-        console.log(post.likes + 1)
+        if (userLike === true) { //if user has already liked post
+          setUserLike(false)
+          setLikes(likes - 1) //unlike
+        } else { //if user hasnt already liked post
+          setUserLike(true)
+          setLikes(post.likes + 1) //like
+        }
       } 
     }
+    const display = action.type === 'like' ? `${likes} ${actionDisplay}` : actionDisplay // setting what the button says depending on the type of action set in props
     return <button className={className} onClick={handleClick}>{display}</button> //button with the previously set class and when clicked will trigger the handleClick function
   }
   

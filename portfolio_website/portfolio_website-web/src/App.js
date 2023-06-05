@@ -1,18 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
 
-import {PostsList} from './posts'
+import {PostsComponent, PostsList} from './posts'
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src="https://media.tenor.com/67LIumILNRsAAAAd/ltg-low-tier-god.gif" className="App-logo" alt="logo" />
+        <img src="https://swingsearch.com/wp-content/uploads/2020/02/cropped-logo-new-p.png" className="App-logo" alt="logo" />
         <p>
           Welcome to Posted's <code>ReactJS</code> testing page.
         </p>
         <div>
-          <PostsList />
+          <PostsComponent />
         </div>
         <a
           className="App-link"
