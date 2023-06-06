@@ -4,10 +4,17 @@ import {loadPosts} from '../lookup' //two dots because it needs to go up a level
 
 export function PostsComponent(props) {
   const textAreaRef = createRef() //reference for the text area
+  const [newPosts, setNewPosts] = useState([])
   const handleSubmit = (event) => {
     event.preventDefault()
-    const newVal = textAreaRef.current.value
-    console.log(newVal) //the text being submitted (to post)
+    const newVal = textAreaRef.current.value //the text being submitted (to post)
+    let tempNewPosts = [...newPosts]
+    tempNewPosts.unshift({ //sends this element into the tempNewPosts list (at beginning of list/array) (push -> end of list, unshift -> beginning of list)
+      content: newVal,
+      likes: 0,
+      id: 12313
+    })
+    setNewPosts(tempNewPosts)
     textAreaRef.current.value = '' //clear the text box
   }
   return <div className={props.className}>
@@ -19,25 +26,32 @@ export function PostsComponent(props) {
         <button type='submit' className='btn btn-primary my-3'>Post</button>
     </form>
     </div>
-  <PostsList />
+  <PostsList newPosts={newPosts}/>
   </div>
 }
 
 export function PostsList(props) {
+    const [postsInit, setPostsInit] = useState([])
     const [posts, setPosts] = useState([])
+    useEffect(() => {
+      const final = [...props.newPosts].concat(postsInit) //merges the two arrays with newPosts being at the front of the array
+      if (final.length !== posts.length) { //if there has been an update (new post)
+        setPosts(final) //update posts component (to render new post)
+      }
+    }, [props.newPosts, posts, postsInit])
     useEffect(() => {
       // do my lookup
       const myCallback = (response, status) => {
         if (status === 200){
-          setPosts(response)
+          setPostsInit(response) //updates posts list component
         } else {
           alert("There was an error")
         }
       }
       loadPosts(myCallback)
     }, [])
-    return posts.map((item, index)=>{
-      return <Post post={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-{item.id}`} />
+    return posts.map((item, index)=>{ //iterates through list of posts
+      return <Post post={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-{item.id}`} /> //rendering post
     })
   }
 
