@@ -18,6 +18,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.views.generic import TemplateView
 
 from posts.views import home_view, post_detail_view, post_list_view, post_create_view, post_delete_view, post_action_view
 
@@ -25,6 +26,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     #path('api/', include('api.urls')),
     path('', home_view),
+    path('react/', TemplateView.as_view(template_name='react.html')),
     path('posts/<int:post_id>', post_detail_view),
     path('posts', post_list_view),
     path('create', post_create_view),
