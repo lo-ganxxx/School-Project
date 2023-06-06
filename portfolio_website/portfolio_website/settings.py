@@ -129,6 +129,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
+STATIC_ROOT = BASE_DIR / "static-root" # emulated version of static server
 
 CORS_ORIGIN_ALLOW_ALL = True #any website has access to my api
 CORS_URLS_REGEX = r'^/api/.*$'
