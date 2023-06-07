@@ -1,6 +1,6 @@
 import {createRef, useEffect, useState} from 'react'
 
-import {loadPosts} from '../lookup' //two dots because it needs to go up a level in file directory to look for that component called lookup
+import {loadPosts, createPost} from '../lookup' //two dots because it needs to go up a level in file directory to look for that component called lookup
 
 export function PostsComponent(props) {
   const textAreaRef = createRef() //reference for the text area
@@ -9,10 +9,13 @@ export function PostsComponent(props) {
     event.preventDefault()
     const newVal = textAreaRef.current.value //the text being submitted (to post)
     let tempNewPosts = [...newPosts]
-    tempNewPosts.unshift({ //sends this element into the tempNewPosts list (at beginning of list/array) (push -> end of list, unshift -> beginning of list)
-      content: newVal,
-      likes: 0,
-      id: 12313
+    createPost(newVal, (response, status)=>{
+      if (status === 201) {
+        tempNewPosts.unshift(response) //sends this element into the tempNewPosts list (at beginning of list/array) (push -> end of list, unshift -> beginning of list)
+      } else {
+        console.log(response)
+        alert("An error occured, please try again")
+      }
     })
     setNewPosts(tempNewPosts)
     textAreaRef.current.value = '' //clear the text box
