@@ -33,6 +33,7 @@ export function PostsComponent(props) {
 export function PostsList(props) {
     const [postsInit, setPostsInit] = useState([])
     const [posts, setPosts] = useState([])
+    const [postsDidSet, setPostsDidSet] = useState(false)
     useEffect(() => {
       const final = [...props.newPosts].concat(postsInit) //merges the two arrays with newPosts being at the front of the array
       if (final.length !== posts.length) { //if there has been an update (new post)
@@ -41,15 +42,18 @@ export function PostsList(props) {
     }, [props.newPosts, posts, postsInit])
     useEffect(() => {
       // do my lookup
-      const myCallback = (response, status) => {
-        if (status === 200){
-          setPostsInit(response) //updates posts list component
-        } else {
-          alert("There was an error")
+      if (postsDidSet === false) {
+        const myCallback = (response, status) => {
+          if (status === 200){
+            setPostsInit(response) //updates posts list component
+            setPostsDidSet(true)
+          } else {
+            alert("There was an error")
+          }
         }
-      }
-      loadPosts(myCallback)
-    }, [])
+        loadPosts(myCallback)
+    }
+    }, [postsDidSet, setPostsDidSet])
     return posts.map((item, index)=>{ //iterates through list of posts
       return <Post post={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-{item.id}`} /> //rendering post
     })

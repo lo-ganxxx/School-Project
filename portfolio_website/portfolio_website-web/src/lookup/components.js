@@ -1,10 +1,11 @@
-export function loadPosts(callback) {
-    const xhr = new XMLHttpRequest() // this is javascript! in python would be something like xhr = SomeClass() -- basically making new instance of a class
-    const method = 'GET' // as opposed to a POST method
-    const url = "http://localhost:8000/api/posts/"
-    const responseType = "json"
-  
-    xhr.responseType = responseType
+function lookup(method, endpoint, callback, data) {
+  let jsonData;
+  if (data){
+    jsonData = JSON.stringify(data)
+  }
+  const xhr = new XMLHttpRequest() // this is javascript! in python would be something like xhr = SomeClass() -- basically making new instance of a class
+    const url = `http://localhost:8000/api${endpoint}` //string substitution 
+    xhr.responseType = "json"
     xhr.open(method, url)
     xhr.onload = function() {
         callback(xhr.response, xhr.status)
@@ -13,5 +14,9 @@ export function loadPosts(callback) {
       console.log(e)
       callback({"message": "The request was an error"}, 400)
     }
-    xhr.send()
+    xhr.send(jsonData)
+  }
+
+export function loadPosts(callback) {
+    lookup("GET", "/posts/", callback)
   }
