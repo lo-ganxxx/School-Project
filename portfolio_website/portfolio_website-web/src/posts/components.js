@@ -3,21 +3,23 @@ import {createRef, useEffect, useState} from 'react'
 import {loadPosts, createPost} from '../lookup' //two dots because it needs to go up a level in file directory to look for that component called lookup
 
 export function PostsComponent(props) {
-  const textAreaRef = createRef() //reference for the text area
+  const textAreaRef = createRef() //reference for the text area (used to access the value of the text area input)
   const [newPosts, setNewPosts] = useState([])
+  const handleBackendUpdate = (response, status) => { //backend api response handler
+    let tempNewPosts = [...newPosts]
+    if (status === 201) {
+      tempNewPosts.unshift(response) //sends this element into the tempNewPosts list (at beginning of list/array) (push -> end of list, unshift -> beginning of list)
+      setNewPosts(tempNewPosts) //updates new posts array
+    } else {
+      console.log(response)
+      alert("An error occured, please try again")
+    }
+  }
   const handleSubmit = (event) => {
     event.preventDefault()
     const newVal = textAreaRef.current.value //the text being submitted (to post)
-    let tempNewPosts = [...newPosts]
-    createPost(newVal, (response, status)=>{
-      if (status === 201) {
-        tempNewPosts.unshift(response) //sends this element into the tempNewPosts list (at beginning of list/array) (push -> end of list, unshift -> beginning of list)
-      } else {
-        console.log(response)
-        alert("An error occured, please try again")
-      }
-    })
-    setNewPosts(tempNewPosts)
+    //backend api request
+    createPost(newVal, handleBackendUpdate) //handleBackendUpdate is a callback function - once the operation of the createPost function is complete and the response is received from the backend, the createPost/lookup function will invoke the callback function handleBackendUpdate and passes the response and status as arguments
     textAreaRef.current.value = '' //clear the text box
   }
   return <div className={props.className}>
