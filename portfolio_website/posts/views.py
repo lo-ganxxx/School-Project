@@ -27,7 +27,7 @@ def home_view(request, *args, **kwargs):
 # @authentication_classes([SessionAuthentication]) #the type of authentication allowed
 @permission_classes([IsAuthenticated]) #only works if request is from an authenticated user
 def post_create_view(request, *args, **kwargs):
-    serializer = PostCreateSerializer(data=request.POST) #uses data from the POST request
+    serializer = PostCreateSerializer(data=request.data) #uses data from the POST request
     if serializer.is_valid(raise_exception=True): #if form doesnt return a ValidationError from validate_content function in PostSerializer class
         serializer.save(user = request.user) #save the Post object to database with user set as the POST requests user
         return Response(serializer.data, status=201)

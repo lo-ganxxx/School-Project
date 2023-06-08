@@ -1,5 +1,5 @@
-import {loadPosts} from './components'
+import {backendLookup} from './components'
 
 export {
-    loadPosts
+    backendLookup
 }
