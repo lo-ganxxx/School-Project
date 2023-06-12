@@ -37,6 +37,49 @@ export function PostsComponent(props) {
   </div>
 }
 
+export function PostsComponentNew(props) { //FOR TRYING TO FIX THE LIKES ISSUE
+  const textAreaRef = createRef() //reference for the text area (used to access the value of the text area input)
+  const [newPosts, setNewPosts] = useState([])
+  const handleBackendUpdate = (response, status) => { //backend api response handler
+    if (status === 201) {
+      // Update the likes count for the new post in the response
+      const newPost = { ...response, likes: 0}
+      const updatedNewPosts = [newPost, ...newPosts]
+      setNewPosts(updatedNewPosts)
+
+      // Update the likes count for the existing posts in the postsInit state
+      const updatedPostsInit = postsInit.map((post) => {
+        if (post.id === response.id) {
+          return newPost
+        }
+        return post
+      })
+      setPostsInit(updatedPostsInit)
+    } else {
+      console.log(response)
+      alert("An error occured, please try again")
+    }
+  }
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const newVal = textAreaRef.current.value //the text being submitted (to post)
+    //backend api request
+    apiPostCreate(newVal, handleBackendUpdate) //handleBackendUpdate is a callback function - once the operation of the createPost function is complete and the response is received from the backend, the createPost/lookup function will invoke the callback function handleBackendUpdate and passes the response and status as arguments
+    textAreaRef.current.value = '' //clear the text box
+  }
+  return <div className={props.className}>
+    <div className='col-md-4 mx-auto col-10'>
+      <form onSubmit={handleSubmit}>
+        <textarea ref={textAreaRef} required={true} className='form-control' name='post'>
+
+        </textarea>
+        <button type='submit' className='btn btn-primary my-3'>Post</button>
+    </form>
+    </div>
+  <PostsList newPosts={newPosts}/>
+  </div>
+}
+
 export function PostsList(props) {
     const [postsInit, setPostsInit] = useState([]) //inital posts
     const [posts, setPosts] = useState([]) //all posts
@@ -96,7 +139,7 @@ export function Post(props) {
     const className = props.className ? props.className : 'col-10 max-auto col-md-6' // if the props object has a className prop it will use that, otherwise will use default value
     
     const handlePerformAction = (newActionPost) => {
-      setActionPost(newActionPost)
+      setActionPost(newActionPost) //updates component
     }
     
     return <div className={className}>
