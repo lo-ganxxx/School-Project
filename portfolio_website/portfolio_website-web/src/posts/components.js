@@ -5,6 +5,7 @@ import {apiPostList,
   apiPostAction} from './lookup'
 
 export function PostsComponent(props) {
+  console.log(props)
   const textAreaRef = createRef() //reference for the text area (used to access the value of the text area input)
   const [newPosts, setNewPosts] = useState([])
   const handleBackendUpdate = (response, status) => { //backend api response handler

@@ -26,10 +26,11 @@ if (appEl) {
 
 const postsEl = document.getElementById('posted')
 if (postsEl) {
+  console.log(postsEl.dataset)
   const posted = ReactDOM.createRoot(document.getElementById('posted'))
   posted.render(
     <React.StrictMode>
-      <PostsComponent />
+      <PostsComponent username={postsEl.dataset.username} /> {/*passing down username from dataset */}
     </React.StrictMode>
   );
 }
