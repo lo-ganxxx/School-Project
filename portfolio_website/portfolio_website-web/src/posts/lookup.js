@@ -3,9 +3,17 @@ import {backendLookup} from '../lookup'  //two dots because it needs to go up a 
 export function apiPostCreate(newPost, callback) {
     backendLookup("POST", "/posts/create/", callback, {content: newPost})
   }
-  
-export function apiPostList(callback) {
-    backendLookup("GET", "/posts/", callback)
+
+export function apiPostDetail(postId, callback) {
+    backendLookup("GET", `/posts/${postId}/`, callback)
+  }
+
+export function apiPostList(username, callback) {
+    let endpoint = "/posts/"
+    if (username){
+      endpoint = `/posts/?username=${username}` // adding username as a request parameter to endpoint url
+    }
+    backendLookup("GET", endpoint, callback)
   }
 
 export function apiPostAction(postId, action, callback) {

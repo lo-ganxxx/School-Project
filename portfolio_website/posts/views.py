@@ -36,6 +36,9 @@ def post_create_view(request, *args, **kwargs):
 @api_view(['GET']) #http method that the client has to send has to be GET
 def post_list_view(request, *args, **kwargs):
     qs = Post.objects.all()
+    username = request.GET.get('username') #username is going to pass in a parameter i.e., username=logan
+    if username != None:
+        qs = qs.filter(user__username__iexact=username) #filters to find only posts by that user -- iexact means its not caps sensitive
     serializer = PostSerializer(qs, many=True)
     return Response(serializer.data, status=200)
 

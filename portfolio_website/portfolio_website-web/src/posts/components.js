@@ -5,9 +5,9 @@ import {apiPostList,
   apiPostAction} from './lookup'
 
 export function PostsComponent(props) {
-  console.log(props)
   const textAreaRef = createRef() //reference for the text area (used to access the value of the text area input)
   const [newPosts, setNewPosts] = useState([])
+  const canPost = props.canPost === "false" ? false : true
   const handleBackendUpdate = (response, status) => { //backend api response handler
     let tempNewPosts = [...newPosts]
     if (status === 201) {
@@ -26,7 +26,7 @@ export function PostsComponent(props) {
     textAreaRef.current.value = '' //clear the text box
   }
   return <div className={props.className}>
-    <div className='col-md-4 mx-auto col-10'>
+    {canPost === true && <div className='col-md-4 mx-auto col-10'> {/* Will only render if canPost is equal to true */}
       <form onSubmit={handleSubmit}>
         <textarea ref={textAreaRef} required={true} className='form-control' name='post'>
 
@@ -34,7 +34,8 @@ export function PostsComponent(props) {
         <button type='submit' className='btn btn-primary my-3'>Post</button>
     </form>
     </div>
-  <PostsList newPosts={newPosts}/>
+    }
+  <PostsList newPosts={newPosts} {...props} /> {/* passing down props that this component has itself */}
   </div>
 }
 
@@ -59,9 +60,9 @@ export function PostsList(props) {
             alert("There was an error")
           }
         }
-        apiPostList(handlePostListLookup)
+        apiPostList(props.username, handlePostListLookup)
     }
-    }, [setPostsInit, postsDidSet, setPostsDidSet])
+    }, [setPostsInit, postsDidSet, setPostsDidSet, props.username])
     return posts.map((item, index)=>{ //iterates through list of posts
       return <Post post={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-${item.id}`} /> //rendering post
     })

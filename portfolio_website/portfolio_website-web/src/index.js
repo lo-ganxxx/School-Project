@@ -5,6 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {PostsComponent} from './posts';
 
+// const cors = require('cors');
+// const corsOptions ={
+//     origin:'http://localhost:3000', 
+//     credentials:true,            //access-control-allow-credentials:true
+//     optionSuccessStatus:200
+// }
+
 // const appEl = document.getElementById('root')
 // if (appEl) {
 //   ReactDOM.render(<App />, appEl);
@@ -30,7 +37,7 @@ if (postsEl) {
   const posted = ReactDOM.createRoot(document.getElementById('posted'))
   posted.render(
     <React.StrictMode>
-      <PostsComponent username={postsEl.dataset.username} /> {/*passing down username from dataset */}
+      <PostsComponent username={postsEl.dataset.username} canPost={postsEl.dataset.canPost} /> {/*passing down username from dataset */}
     </React.StrictMode>
   );
 }
