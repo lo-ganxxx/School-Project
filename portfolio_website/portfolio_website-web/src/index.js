@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {PostsComponent} from './posts';
+import {PostsComponent, PostDetailComponent} from './posts';
 
 // const cors = require('cors');
 // const corsOptions ={
@@ -41,6 +41,16 @@ if (postsEl) {
     </React.StrictMode>
   );
 }
+
+const e = React.createElement //all below done all myself! had to change how done as react has changed since tutorial was published
+
+const postsDetailElements = document.querySelectorAll(".posted-detail") //gets array of all divs with the class "posted-detail"
+
+postsDetailElements.forEach(container => { //for each div in array
+  const newone = ReactDOM.createRoot(container) //create a root for it (container is the div)
+  newone.render( //render it
+    e(PostDetailComponent, container.dataset)); //pass down dataset as well
+})
 
 // const root = ReactDOM.createRoot(document.getElementById('root'));
 // root.render(
