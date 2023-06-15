@@ -30,8 +30,8 @@
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div class="posted-detail" data-post-id="12" data-class-name="col-6 mx-auto"></div>
-    <div class="d-none" id="posted" data-username="logan" data-can-post="false" ></div> <!-- Making the username available in the dataset -->
+    <div id="post-container"></div>
+    <div id="posted" data-username="logan" data-can-post="false" ></div> <!-- Making the username available in the dataset -->
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -42,5 +42,18 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      var path = window.location.pathname //getting pages path
+      var idRegex = /(?<postid>\d+)/ //id regular expression
+      var match = path.match(idRegex)
+      if (match) { //if there is a match
+        var postId = match.groups.postid //gets the post id
+        var postedEl = document.getElementById("posted") //getting element with the id "posted"
+        postedEl.className = 'd-none' //Hiding the element (display none)
+        var postEl = "<div class='posted-detail' data-post-id=" + postId + " data-class-name='col-6 mx-auto'></div>"
+        var mainContainer = document.getElementById("post-container") //getting element with the id "post-container"
+        mainContainer.innerHTML = postEl //setting the innerhtml of the element
+      }
+    </script>
   </body>
 </html>
