@@ -20,19 +20,19 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 
-from posts.views import home_view, post_detail_view, post_list_view, post_create_view, post_delete_view, post_action_view
+from posts.views import (
+    posts_list_view,
+    posts_detail_view,
+    posts_profile_view,
+)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     #path('api/', include('api.urls')),
-    path('', home_view),
-    path('react/', TemplateView.as_view(template_name='react.html')),
-    path('posts/<int:post_id>', post_detail_view),
-    path('posts', post_list_view),
-    path('create', post_create_view),
-    #path('api/posts/<int:post_id>/delete', post_delete_view),
-    #path('api/posts/action', post_action_view),
-    path('api/posts/', include('posts.urls'))
+    path('', posts_list_view),
+    path('<int:post_id>', posts_detail_view), #sets post_id argument to whatever integer is in that place in the url
+    path('profile/<str:username>', posts_profile_view), #sets username argument to whatever string is in that place in the url
+    path('api/posts/', include('posts.urls')),
     
 ]
 
