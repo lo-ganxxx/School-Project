@@ -20,19 +20,27 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from django.views.generic import TemplateView
 
+from accounts.views import (
+    login_view,
+    logout_view,
+    register_view,
+)
+
 from posts.views import (
     posts_list_view,
     posts_detail_view,
-    posts_profile_view,
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     #path('api/', include('api.urls')),
     path('', posts_list_view),
+    path('login/', login_view),
+    path('logout/', logout_view),
+    path('register/', register_view),
     path('<int:post_id>', posts_detail_view), #sets post_id argument to whatever integer is in that place in the url
-    path('profile/<str:username>', posts_profile_view), #sets username argument to whatever string is in that place in the url
-    path('api/posts/', include('posts.urls')),
+    path('profile/', include('profiles.urls')),
+    path('api/posts/', include('posts.api.urls')),
     
 ]
 
