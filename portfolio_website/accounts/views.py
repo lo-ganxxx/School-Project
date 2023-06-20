@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
 #function based views (current) -> class based views -> more DRY but much more COMPLEX!
@@ -35,8 +35,10 @@ def register_view(request, *args, **kwargs):
     if form.is_valid():
         user = form.save(commit=True) #saves the user to the database
         user.set_password(form.cleaned_data.get("password1")) #sets password (encrytped)
-        #send a confirmation email to verify their account?
-        login(request, user) #logs them into account they just created
+        #send a confirmation email to verify their account??? could add later.
+        new_user = authenticate(username=form.cleaned_data['username'],
+                                password=form.cleaned_data['password1']) #authenticates that credentials are correct
+        login(request, new_user) #logs them into account they just created
         return redirect("/")
 
     context = {
