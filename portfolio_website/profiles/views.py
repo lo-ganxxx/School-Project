@@ -1,9 +1,32 @@
 from django.http import Http404
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
+from .forms import ProfileForm
 from .models import Profile
 
-# Create your views here.
+def profile_update_view(request, *args, **kwargs):
+    if not request.user.is_authenticated: #not logged in
+        return redirect("/login?next=/profile/update") #redirect to login page and set argument for next
+    user = request.user
+    my_profile = user.profile #one to one field so i can do this
+    form = ProfileForm(request.POST or None, instance=my_profile) #instance is what the form is updating
+    if form.is_valid():
+        profile_obj = form.save(commit=False)
+        first_name = form.cleaned_data.get('first_name')
+        last_name = form.cleaned_data.get('last_name')
+        email_address = form.cleaned_data.get('email_address')
+        user.first_name = first_name
+        user.last_name = last_name
+        user.email_address = email_address
+        user.save() #done this way in order to save 2 models in 1 form and 1 view
+        profile_obj.save()
+    context = {
+        "form": form,
+        "btn_label": "Save",
+        "title": "Update Profile"
+    }
+    return render(request, "profiles/form.html", context)
+
 def profile_detail_view(request, username, *args, **kwargs):
     #get the profile for the passed username
     qs = Profile.objects.filter(user__username=username)
