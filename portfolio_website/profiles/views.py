@@ -8,8 +8,13 @@ def profile_update_view(request, *args, **kwargs):
     if not request.user.is_authenticated: #not logged in
         return redirect("/login?next=/profile/update") #redirect to login page and set argument for next
     user = request.user
+    user_data = {
+        "first_name": user.first_name,
+        "last_name": user.last_name,
+        "email_address": user.email
+    }
     my_profile = user.profile #one to one field so i can do this
-    form = ProfileForm(request.POST or None, instance=my_profile) #instance is what the form is updating
+    form = ProfileForm(request.POST or None, instance=my_profile, initial=user_data) #instance is what object the form is updating, initial sets the initial values of the input boxes to what is set in user_data dictionary
     if form.is_valid():
         profile_obj = form.save(commit=False)
         first_name = form.cleaned_data.get('first_name')
