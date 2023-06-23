@@ -34,6 +34,10 @@ class PostTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.json()), 4)
 
+    def test_posts_related_name(self):
+        user = self.user
+        self.assertEqual(user.posts.count(), 2)
+
     def test_action_like(self):
         client = self.get_client()
         response = client.post("/api/posts/action/", {"id": 1, "action": "like"})
@@ -42,6 +46,11 @@ class PostTestCase(TestCase):
         self.assertEqual(like_count, 1)
         #print(response.json())
         #self.assertEqual(len(response.json()), 4)
+        user = self.user
+        my_like_instances_count = user.postlike_set.count() #amount of posts liked
+        self.assertEqual(my_like_instances_count, 1)
+        my_related_likes = user.post_user.count() #amount of posts liked using related_name
+        self.assertEqual(my_like_instances_count, my_related_likes)
 
     def test_action_unlike(self):
         client = self.get_client()

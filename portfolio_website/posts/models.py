@@ -23,7 +23,8 @@ class PostLike(models.Model):
 # Create your models here.
 class Post(models.Model):
     #id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE) #one user can have many posts, if user is deleted, all their posts are deleted too
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts") #one user can have many posts, if user is deleted, all their posts are deleted too
+    #setting related_name means that i can easier find all posts related to a USER easier, rather than having to do i.e. user.post_set.all() to get all of a user's posts i can do user.posts.all()
     likes = models.ManyToManyField(User, related_name='post_user', blank=True, through=PostLike) #one post can have many users and many users can have many posts (in relation to likes) -- kind of as if for every like it creates a new object documenting that like and what user did it
     content = models.TextField(blank=True, null=True)
     image = models.FileField(upload_to="images/", blank=True, null=True)
