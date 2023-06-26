@@ -1,0 +1,38 @@
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.http import HttpResponse, Http404, JsonResponse
+from django.shortcuts import render, redirect
+from django.utils.http import url_has_allowed_host_and_scheme #is_safe_url (renamed)
+
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+from ..models import Profile
+
+ALLOWED_HOSTS = settings.ALLOWED_HOSTS
+User = get_user_model()
+
+# Create your views here.
+
+#these requirements for a function to run like e.g. @api_view are called decorators
+@api_view(['GET', 'POST']) #http method that the client has to send has to be POST
+@permission_classes([IsAuthenticated]) #only works if request is from an authenticated user
+def user_follow_view(request, username, *args, **kwargs):
+    me = request.user
+    other_user_qs = User.objects.filter(username=username) #using passed in username of user to be followed/unfollowed
+    if other_user_qs.exists() == False:
+        return Response({}, status=404)
+    other = other_user_qs.first()
+    profile = other.profile #profile associated with user being followed/unfollowed
+    data = request.data or {} #set to the requests data or an empty dictionary if there is none set
+    action = data.get("action") #getting the post requests action from data dictionary
+    if action == "follow":
+        profile.followers.add(me) #follow
+    elif action == "unfollow":
+        profile.followers.remove(me) #unfollow
+    else:
+        pass
+    current_followers_qs = profile.followers.all()
+    return Response({"follower_count":current_followers_qs.count()}, status=400)

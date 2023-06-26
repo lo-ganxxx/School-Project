@@ -41,7 +41,7 @@ urlpatterns = [
     path('<int:post_id>', posts_detail_view), #sets post_id argument to whatever integer is in that place in the url
     path('profile/', include('profiles.urls')),
     path('api/posts/', include('posts.api.urls')),
-    
+    path('api/profile/', include('profiles.api.urls')),
 ]
 
 if settings.DEBUG:
