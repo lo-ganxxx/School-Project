@@ -37,18 +37,12 @@ def post_list_view(request, *args, **kwargs):
     serializer = PostSerializer(qs, many=True)
     return Response(serializer.data, status=200)
 
+from django.db.models import Q
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def post_feed_view(request, *args, **kwargs): #users posts + users they follow's posts
     user = request.user #the user logged in themself
-    profiles = user.following.all() #all profiles the user follows
-    print(profiles)
-    followed_users_id = []
-    if profiles.exists(): #if the user follows anyone
-        followed_users_id = [x.user.id for x in profiles] #creates a list with the ids of all profiles followed
-    followed_users_id.append(user.id) #also appends the id of the user logged in themself
-    qs = Post.objects.filter(user__id__in=followed_users_id).order_by("-timestamp") #using __in allows us to look inside of a list and then get all posts that are equal to an id in that list
-    #the query set is ordered by what is most recent (newest first)
+    qs = Post.objects.feed(user) #uses the function in custom model manager to filter it
     serializer = PostSerializer(qs, many=True)
     return Response(serializer.data, status=200)
 

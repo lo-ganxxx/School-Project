@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.db import models
-import random
+from django.db.models import Q
 
 User = settings.AUTH_USER_MODEL
 
@@ -21,6 +21,25 @@ class PostLike(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
 # Create your models here.
+class PostQuerySet(models.QuerySet):
+    def feed(self, user):
+        profiles_exist = user.following.exists #does the user have any instances of following anyone
+        followed_users_id = []
+        if profiles_exist(): #if the user follows anyone
+            followed_users_id = user.following.values_list("user__id", flat=True) #list of all the values of the users being followed's ids - flat=True means that the returned results are all single values
+        pass #also appends the id of the user logged in themself
+        return self.filter( #Model.objects
+            Q(user__id__in=followed_users_id) | #using __in allows us to look inside of a list and then get all posts that are equal to an id in that list
+            Q(user=user) #the pipe means or, so it will get both posts by followed users and the user logged in themself
+            ).distinct().order_by("-timestamp") #the query set is ordered by what is most recent (newest first)
+
+class PostManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        return PostQuerySet(self.model, using=self._db)
+
+    def feed(self, user):
+        return self.get_queryset().feed(user) #calls the PostQuerySet feed function itself
+
 class Post(models.Model):
     #id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts") #one user can have many posts, if user is deleted, all their posts are deleted too
@@ -30,6 +49,8 @@ class Post(models.Model):
     image = models.FileField(upload_to="images/", blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     #comments = models.ManyToManyField(User, related_name="post_commented_on", blank=True, through=PostComment) #related_name field lets you access foreign keys defined in your Django models backwards - e.g. you could find all comments by doing
+
+    objects = PostManager() #extends default model manager
 
     def __str__(self):
         return "Post ID: " + str(self.id)
