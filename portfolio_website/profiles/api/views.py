@@ -17,12 +17,15 @@ User = get_user_model()
 # Create your views here.
 
 #these requirements for a function to run like e.g. @api_view are called decorators
-@api_view(['GET', 'POST']) #http method that the client has to send has to be POST
+@api_view(['GET', 'POST']) #http method that the client has to send has to be POST or GET
 @permission_classes([IsAuthenticated]) #only works if request is from an authenticated user
 def user_follow_view(request, username, *args, **kwargs):
     me = request.user
     other_user_qs = User.objects.filter(username=username) #using passed in username of user to be followed/unfollowed
-    if other_user_qs.exists() == False:
+    if me.username == username: #if the user followings username is same as the user being followed's username (same user)
+        my_followers = me.profile.followers.all()
+        return Response({"count":my_followers.count()}, status=200) #dont update followers, just give response of the user's followers (you shouldn't be able to follow yourself)
+    if not other_user_qs.exists():
         return Response({}, status=404)
     other = other_user_qs.first()
     profile = other.profile #profile associated with user being followed/unfollowed
@@ -35,4 +38,4 @@ def user_follow_view(request, username, *args, **kwargs):
     else:
         pass
     current_followers_qs = profile.followers.all()
-    return Response({"follower_count":current_followers_qs.count()}, status=400)
+    return Response({"count":current_followers_qs.count()}, status=200)
