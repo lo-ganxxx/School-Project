@@ -1,5 +1,6 @@
 from django.conf import settings
 from rest_framework import serializers
+from profiles.serializers import PublicProfileSerializer
 
 MAX_POST_LENGTH = settings.MAX_POST_LENGTH
 POST_ACTION_OPTIONS = settings.POST_ACTION_OPTIONS
@@ -31,13 +32,21 @@ class PostCreateSerializer(serializers.ModelSerializer): #create only serializer
         return value
 
 class PostSerializer(serializers.ModelSerializer): #read only serializer
+    user = PublicProfileSerializer(source='user.profile', read_only=True) #source is the object that it should be serializing
     likes = serializers.SerializerMethodField(read_only=True)
     content = serializers.SerializerMethodField(read_only=True)
     comments = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Post
-        fields = ['id', 'content', 'likes', 'comments']
+        fields = [
+                'user',
+                'id',
+                'content',
+                'likes',
+                'comments',
+                'timestamp'
+                ]
 
     def get_likes(self, obj):
         return obj.likes.count()
