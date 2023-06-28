@@ -5,6 +5,7 @@ from django.utils.http import url_has_allowed_host_and_scheme #is_safe_url (rena
 
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -34,8 +35,14 @@ def post_list_view(request, *args, **kwargs):
     username = request.GET.get('username') #username is going to pass in a parameter i.e., username=logan
     if username != None:
         qs = qs.filter(user__username__iexact=username) #filters to find only posts by that user -- iexact means its not caps sensitive
-    serializer = PostSerializer(qs, many=True)
-    return Response(serializer.data, status=200)
+    return get_paginated_queryset_response(qs, request)
+
+def get_paginated_queryset_response(qs, request): #custom function to use for default pagination for posts
+    paginator = PageNumberPagination() #setting paginator class (so can make it so there are multiple pages for the query sets items rather than having to get all the items at once)
+    paginator.page_size = 20 #each page will send back 20 items from whatever query set ends up being
+    paginated_qs = paginator.paginate_queryset(qs, request) #paginates the query set
+    serializer = PostSerializer(paginated_qs, many=True) #serialize the paginated query set
+    return paginator.get_paginated_response(serializer.data) #return in default pagination output style (count, next, previous and results)
 
 from django.db.models import Q
 @api_view(['GET'])
@@ -43,8 +50,8 @@ from django.db.models import Q
 def post_feed_view(request, *args, **kwargs): #users posts + users they follow's posts
     user = request.user #the user logged in themself
     qs = Post.objects.feed(user) #uses the function in custom model manager to filter it
-    serializer = PostSerializer(qs, many=True)
-    return Response(serializer.data, status=200)
+    return get_paginated_queryset_response(qs, request) #much more fast and efficient than loading the whole query set at once
+    #Response(serializer.data, status=200)
 
 
 @api_view(['GET'])
