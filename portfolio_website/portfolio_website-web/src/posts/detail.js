@@ -20,13 +20,27 @@ export function Post(props) {
     }
     
     return <div className={className}>
+      <div className='d-flex'>
+        <div className=''>
+          <span className='mx-1 px-3 py-2 rounded-circle bg-dark text-white'>
+            {post.user.username[0]}
+          </span>
+        </div>
+        <div className='col-11'>
+      <p>
+        {post.user.first_name}{" "}
+        {post.user.last_name}{" "}
+        @{post.user.username}
+      </p>
       <p>{post.content} - {post.id}</p>
-      {actionPost && <div className = 'btn btn-group'>
+      {actionPost && <div className = 'btn btn-group px-0'>
         <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "like", display: "Likes"}}/>
         <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "unlike", display: "Unlike"}}/>
         <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "comment", display: "Comment"}}/>
         {isDetail === true ? null : <button className='btn btn-outline-primary btn-sm' onClick={handleLink}>View</button>} {/* if isDetail is true it will render nothing (null) otherwise it will render the view button */}
       </div>
     }
+    </div>
+    </div>
     </div>
   }
