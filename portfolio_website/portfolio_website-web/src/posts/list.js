@@ -30,9 +30,27 @@ export function PostsList(props) {
         apiPostList(props.username, handlePostListLookup)
     }
     }, [setPostsInit, postsDidSet, setPostsDidSet, props.username])
+
+    const handleLoadNext = (event) => {
+      event.preventDefault()
+      if (nextUrl !== null) {
+        const handleLoadNextResponse = (response, status) => {
+          if (status === 200){
+            setNextUrl(response.next) //setting next url to next page url from the pagination response
+            const newPosts = [...posts].concat(response.results) //orignal posts with next page's posts on end
+            setPostsInit(newPosts) //adding to initial posts (they already existed just werent loaded)
+            setPosts(newPosts) //updates posts list component with response.results (query set items for that page)
+          } else {
+            alert("There was an error")
+          }
+        }
+        apiPostList(props.username, handleLoadNextResponse, nextUrl)
+      }
+    }
+
     return <React.Fragment>{posts.map((item, index)=>{ //iterates through list of posts
       return <Post post={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-${item.id}`} /> //rendering post
     })}
-    { nextUrl !== null && <button className='btn btn-outline-primary'>Load more...</button>}
+    {nextUrl !== null && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load more...</button>}
     </React.Fragment>
   }
