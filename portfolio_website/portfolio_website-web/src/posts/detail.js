@@ -2,6 +2,8 @@ import {useState} from 'react'
 
 import {ActionBtn} from './buttons'
 
+import {UserDisplay, UserPicture} from '../profiles'
+
 export function Post(props) {
     const {post} = props // This line extracts the post prop from the props object using destructuring assignment. It allows the component to access the post prop directly without having to reference props.post throughout the component.
     const [actionPost, setActionPost] = useState(props.post ? props.post : null)
@@ -22,15 +24,11 @@ export function Post(props) {
     return <div className={className}>
       <div className='d-flex'>
         <div className=''>
-          <span className='mx-1 px-3 py-2 rounded-circle bg-dark text-white'>
-            {post.user.username[0]}
-          </span>
+          <UserPicture user={post.user} />
         </div>
         <div className='col-11'>
       <p>
-        {post.user.first_name}{" "}
-        {post.user.last_name}{" "}
-        @{post.user.username}
+        <UserDisplay user={post.user} includeFullName /> {/* will add later that it will not includeFullName if the profile is private possibly? */}
       </p>
       <p>{post.content} - {post.id}</p>
       {actionPost && <div className = 'btn btn-group px-0'>
