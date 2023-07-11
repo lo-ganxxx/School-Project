@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {PostsComponent, PostDetailComponent} from './posts';
+import {FeedComponent, PostsComponent, PostDetailComponent} from './posts';
 
 // const cors = require('cors');
 // const corsOptions ={
@@ -31,6 +31,8 @@ if (appEl) {
   );
 }
 
+const e = React.createElement
+
 const postsEl = document.getElementById('posted')
 if (postsEl) {
   console.log(postsEl.dataset)
@@ -42,7 +44,15 @@ if (postsEl) {
   );
 }
 
-const e = React.createElement //all below done all myself! had to change how done as react has changed since tutorial was published
+//better way of passing down dataset vv
+const postFeedEl = document.getElementById('posted-feed')
+if (postFeedEl) {
+  const postedFeed = ReactDOM.createRoot(document.getElementById('posted-feed'))
+  postedFeed.render(
+    e(FeedComponent, postFeedEl.dataset)); //pass down dataset as well
+}
+
+//const e = React.createElement //all below done all myself! had to change how done as react has changed since tutorial was published
 
 const postsDetailElements = document.querySelectorAll(".posted-detail") //gets array of all divs with the class "posted-detail"
 

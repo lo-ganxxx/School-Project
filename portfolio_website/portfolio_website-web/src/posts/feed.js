@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react'
 import React from 'react' //only worked in a seperate line for unknown reasons
 
-import {apiPostList} from './lookup'
+import {apiPostFeed} from './lookup'
 import {Post} from './detail'
 
-export function PostsList(props) {
+export function FeedList(props) {
     const [postsInit, setPostsInit] = useState([]) //inital posts
     const [posts, setPosts] = useState([]) //all posts
     const [nextUrl, setNextUrl] = useState([null]) //url for next page of posts
@@ -23,13 +23,11 @@ export function PostsList(props) {
             setNextUrl(response.next) //setting next url to next page url from the pagination response
             setPostsInit(response.results) //updates posts list component with response.results (query set items for that page)
             setPostsDidSet(true)
-          } else {
-            alert("There was an error")
           }
         }
-        apiPostList(props.username, handlePostListLookup)
+        apiPostFeed(handlePostListLookup)
     }
-    }, [setPostsInit, postsDidSet, setPostsDidSet, props.username])
+    }, [setPostsInit, postsDidSet, setPostsDidSet])
 
     const handleLoadNext = (event) => {
       event.preventDefault()
@@ -40,11 +38,9 @@ export function PostsList(props) {
             const newPosts = [...posts].concat(response.results) //orignal posts with next page's posts on end
             setPostsInit(newPosts) //adding to initial posts (they already existed just werent loaded)
             setPosts(newPosts) //updates posts list component with response.results (query set items for that page)
-          } else {
-            alert("There was an error")
           }
         }
-        apiPostList(props.username, handleLoadNextResponse, nextUrl) // dont actually need username for loading next page but for sake of preventing errors i have it (order of parameters)
+        apiPostFeed(handleLoadNextResponse, nextUrl)
       }
     }
 

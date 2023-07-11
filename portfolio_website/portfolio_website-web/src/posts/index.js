@@ -1,5 +1,5 @@
 import {ActionBtn} from './buttons'
-import {PostsComponent, PostDetailComponent} from './components'
+import {FeedComponent, PostsComponent, PostDetailComponent} from './components'
 import {PostCreate} from './create'
 import {Post} from './detail'
 import {PostsList} from './list'
@@ -9,6 +9,7 @@ export {
     Post,
     PostsList,
     PostsComponent,
+    FeedComponent,
     PostDetailComponent,
     PostCreate
 }
