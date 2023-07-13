@@ -24,7 +24,7 @@ from ..serializers import PostSerializer, PostActionSerializer, PostCreateSerial
 @permission_classes([IsAuthenticated]) #only works if request is from an authenticated user
 def post_create_view(request, *args, **kwargs):
     serializer = PostCreateSerializer(data=request.data) #uses data from the POST request
-    if serializer.is_valid(raise_exception=True): #if form doesnt return a ValidationError from validate_content function in PostSerializer class
+    if serializer.is_valid(raise_exception=True): #if form doesnt return a ValidationError from validate_content function in PostCreateSerializer class
         serializer.save(user = request.user) #save the Post object to database with user set as the POST requests user
         return Response(serializer.data, status=201)
     return Response({}, status=400)
@@ -44,9 +44,8 @@ def get_paginated_queryset_response(qs, request): #custom function to use for de
     serializer = PostSerializer(paginated_qs, many=True) #serialize the paginated query set
     return paginator.get_paginated_response(serializer.data) #return in default pagination output style (count, next, previous and results)
 
-from django.db.models import Q
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def post_feed_view(request, *args, **kwargs): #users posts + users they follow's posts
     user = request.user #the user logged in themself
     qs = Post.objects.feed(user) #uses the function in custom model manager to filter it

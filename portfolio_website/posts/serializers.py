@@ -18,10 +18,11 @@ class PostActionSerializer(serializers.Serializer):
         return value
 
 class PostCreateSerializer(serializers.ModelSerializer): #create only serializer
+    user = PublicProfileSerializer(source='user.profile', read_only=True) #source is the object that it should be serializing
     likes = serializers.SerializerMethodField(read_only=True)
     class Meta:
         model = Post
-        fields = ['id', 'content', 'likes']
+        fields = ['user', 'id', 'content', 'likes']
 
     def get_likes(self, obj):
         return obj.likes.count()

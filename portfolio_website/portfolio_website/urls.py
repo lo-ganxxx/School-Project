@@ -27,14 +27,16 @@ from accounts.views import (
 )
 
 from posts.views import (
+    home_view,
     posts_list_view,
     posts_detail_view,
 )
 
 urlpatterns = [
+    path('', home_view),
     path('admin/', admin.site.urls),
     #path('api/', include('api.urls')),
-    path('', posts_list_view),
+    path('global/', posts_list_view),
     path('login/', login_view),
     path('logout/', logout_view),
     path('register/', register_view),

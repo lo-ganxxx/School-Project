@@ -6,6 +6,8 @@ import {UserDisplay, UserPicture} from '../profiles'
 
 export function Post(props) {
     const {post} = props // This line extracts the post prop from the props object using destructuring assignment. It allows the component to access the post prop directly without having to reference props.post throughout the component.
+    console.log("post: ", post)
+    console.log("posts user: ", post.user)
     const [actionPost, setActionPost] = useState(props.post ? props.post : null)
     const className = props.className ? props.className : 'col-10 max-auto col-md-6' // if the props object has a className prop it will use that, otherwise will use default value
     var path = window.location.pathname //getting pages path
