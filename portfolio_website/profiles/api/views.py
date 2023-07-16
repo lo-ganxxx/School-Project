@@ -10,11 +10,22 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from ..models import Profile
+from ..serializers import PublicProfileSerializer
 
 ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 User = get_user_model()
 
 # Create your views here.
+
+@api_view(['GET'])
+def profile_detail_view(request, username, *args, **kwargs):
+    #get the profile for the passed username
+    qs = Profile.objects.filter(user__username=username)
+    if not qs.exists():
+        return Response({"detail":"User not found"}, status=404)
+    profile_obj = qs.first()
+    data = PublicProfileSerializer(instance=profile_obj) #serialize the profiles data
+    return Response(data.data, status=200) #username is the username given in function argument
 
 #these requirements for a function to run like e.g. @api_view are called decorators
 @api_view(['GET', 'POST']) #http method that the client has to send has to be POST or GET
