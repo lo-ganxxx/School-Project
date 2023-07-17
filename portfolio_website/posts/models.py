@@ -11,7 +11,7 @@ class PostComment(models.Model): #all me
     content = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return "Comment '{}' by {}".format(self.content, self.user.username)
+        return f"Comment {self.content} by {self.user.username}" #using f string rather than .format
     class Meta:
         ordering = ['-id']
 

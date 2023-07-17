@@ -3,7 +3,7 @@
 {% block content %}
 
 {% if request.user.is_authenticated %}
-    <h1> testing it worked!</h1>
+    <h1>this shows if request.user.is_authenticated is true</h1>
     <div id='posted-feed'></div> <!-- using react, renders FeedComponenet (posts by the user logged in and users they follow) -->
 {% else %}
     <div id='posted'></div> <!-- using react, renders PostComponent (all posts) -->
