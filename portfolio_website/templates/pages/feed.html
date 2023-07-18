@@ -6,6 +6,12 @@
     <h1>this shows if request.user.is_authenticated is true</h1>
     <div id='posted-feed'></div> <!-- using react, renders FeedComponenet (posts by the user logged in and users they follow) -->
 {% else %}
+    <div class='row text-center'>
+        <div class='col'>
+            <img src="https://swingsearch.com/wp-content/uploads/2020/02/cropped-logo-new-p.png" class="App-logo" alt="logo" />
+            <h1>Welcome to Posted</h1>
+        </div>
+    </div>
     <div id='posted'></div> <!-- using react, renders PostComponent (all posts) -->
 {% endif %}
 
