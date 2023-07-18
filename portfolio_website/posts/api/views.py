@@ -41,7 +41,7 @@ def get_paginated_queryset_response(qs, request): #custom function to use for de
     paginator = PageNumberPagination() #setting paginator class (so can make it so there are multiple pages for the query sets items rather than having to get all the items at once)
     paginator.page_size = 20 #each page will send back 20 items from whatever query set ends up being
     paginated_qs = paginator.paginate_queryset(qs, request) #paginates the query set
-    serializer = PostSerializer(paginated_qs, many=True) #serialize the paginated query set
+    serializer = PostSerializer(paginated_qs, many=True, context={"request": request}) #serialize the paginated query set - needs to pass the context of the request so it knows what user is logged in (so it knows if the posts user is followed)
     return paginator.get_paginated_response(serializer.data) #return in default pagination output style (count, next, previous and results)
 
 @api_view(['GET'])

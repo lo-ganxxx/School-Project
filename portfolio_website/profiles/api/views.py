@@ -18,13 +18,13 @@ User = get_user_model()
 # Create your views here.
 
 @api_view(['GET'])
-def profile_detail_view(request, username, *args, **kwargs):
+def profile_detail_api_view(request, username, *args, **kwargs):
     #get the profile for the passed username
     qs = Profile.objects.filter(user__username=username)
     if not qs.exists():
         return Response({"detail":"User not found"}, status=404)
     profile_obj = qs.first()
-    data = PublicProfileSerializer(instance=profile_obj) #serialize the profiles data
+    data = PublicProfileSerializer(instance=profile_obj, context={"request": request}) #serialize the profiles data and passes the requests data (so the serializer knows who the request user is)
     return Response(data.data, status=200) #username is the username given in function argument
 
 #these requirements for a function to run like e.g. @api_view are called decorators
