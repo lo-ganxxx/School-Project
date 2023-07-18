@@ -11,18 +11,19 @@ export function UserLink(props) { // will return link to users profile
 }
 
 export function UserDisplay(props) { // will return render for username and name
-  const {user, includeFullName} = props
-  const nameDisplay = includeFullName === true ? `${user.first_name} ${user.last_name}` : null // only display full name if it is set to true
+  const {user, includeFullName, hideLink} = props
+  const nameDisplay = includeFullName === true ? `${user.first_name} ${user.last_name} ` : null // only display full name if it is set to true
 
   return <React.Fragment>
     {nameDisplay}
-    <UserLink username={user.username}>@{user.username}</UserLink>
+    {hideLink === true ? `@${user.username}` : <UserLink username={user.username}>@{user.username}</UserLink>}
   </React.Fragment>
 }
 
 export function UserPicture(props) { // will return users profile picture
-  const {user} = props
-  return <UserLink username={user.username}><span className='mx-1 px-3 py-2 rounded-circle bg-dark text-white'>
-    {user.username[0]} {/* first character of the username */}
-    </span></UserLink>
+  const {user, hideLink} = props
+  const userIdSpan = <span className='mx-1 px-3 py-2 rounded-circle bg-dark text-white'>
+  {user.username[0]} {/* first character of the username */}
+  </span>
+  return hideLink === true ? userIdSpan : <UserLink username={user.username}>{userIdSpan}</UserLink>
 }

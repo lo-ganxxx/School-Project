@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {FeedComponent, PostsComponent, PostDetailComponent} from './posts';
-import {ProfileBadge} from './profiles';
+import {ProfileBadgeComponent} from './profiles';
 
 // const cors = require('cors');
 // const corsOptions ={
@@ -68,7 +68,7 @@ const userProfileBadgeElements = document.querySelectorAll(".posted-profile-badg
 userProfileBadgeElements.forEach(container => { //for each div in array
   const newone = ReactDOM.createRoot(container) //create a root for it (container is the div)
   newone.render( //render it
-    e(ProfileBadge, container.dataset)); //pass down dataset as well
+    e(ProfileBadgeComponent, container.dataset)); //pass down dataset as well
 })
 
 // const root = ReactDOM.createRoot(document.getElementById('root'));
