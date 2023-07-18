@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {FeedComponent, PostsComponent, PostDetailComponent} from './posts';
+import {ProfileBadge} from './profiles';
 
 // const cors = require('cors');
 // const corsOptions ={
@@ -60,6 +61,14 @@ postsDetailElements.forEach(container => { //for each div in array
   const newone = ReactDOM.createRoot(container) //create a root for it (container is the div)
   newone.render( //render it
     e(PostDetailComponent, container.dataset)); //pass down dataset as well
+})
+
+const userProfileBadgeElements = document.querySelectorAll(".posted-profile-badge") //gets array of all divs with the class "posted-detail"
+
+userProfileBadgeElements.forEach(container => { //for each div in array
+  const newone = ReactDOM.createRoot(container) //create a root for it (container is the div)
+  newone.render( //render it
+    e(ProfileBadge, container.dataset)); //pass down dataset as well
 })
 
 // const root = ReactDOM.createRoot(document.getElementById('root'));
