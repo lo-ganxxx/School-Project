@@ -6,7 +6,7 @@ from .models import Profile
 
 def profile_update_view(request, *args, **kwargs):
     if not request.user.is_authenticated: #not logged in
-        return redirect("/login?next=/profile/update") #redirect to login page and set argument for next
+        return redirect("/login?next=/profile/edit") #redirect to login page and set argument for next
     user = request.user
     user_data = {
         "first_name": user.first_name,

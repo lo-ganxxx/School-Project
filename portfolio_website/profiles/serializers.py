@@ -16,7 +16,7 @@ class PublicProfileSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'id',
-            'nickname',
+            'location',
             'bio',
             'follower_count',
             'following_count',
