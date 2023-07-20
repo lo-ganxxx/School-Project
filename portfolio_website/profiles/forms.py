@@ -11,4 +11,4 @@ class ProfileForm(forms.ModelForm):
     email_address = forms.CharField(required=False)
     class Meta:
         model = Profile
-        fields = ['location', 'bio']
+        fields = ['picture', 'location', 'bio']

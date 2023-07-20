@@ -22,7 +22,7 @@ def profile_update_view(request, *args, **kwargs):
         email_address = form.cleaned_data.get('email_address')
         user.first_name = first_name
         user.last_name = last_name
-        user.email_address = email_address
+        user.email = email_address
         user.save() #done this way in order to save 2 models in 1 form and 1 view
         profile_obj.save()
     context = {

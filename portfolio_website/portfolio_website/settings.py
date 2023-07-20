@@ -135,6 +135,9 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = BASE_DIR / "static-root" # emulated version of static server
 
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "media/"
+
 CORS_ORIGIN_ALLOW_ALL = True #any website has access to my api
 CORS_URLS_REGEX = r'^/api/.*$'
 
@@ -151,13 +154,13 @@ DEFAULT_AUTHENTICATION_CLASSES = [
     'rest_framework.authentication.SessionAuthentication'
 ]
 
-if DEBUG:
-    # DEFAULT_RENDERER_CLASSES += [
-    # 'rest_framework.renderers.BrowsableAPIRenderer',
-    # ]
-    DEFAULT_AUTHENTICATION_CLASSES += [
-        'portfolio_website.rest_api.dev.DevAuthentication'
-    ]
+# if DEBUG:
+#     # DEFAULT_RENDERER_CLASSES += [
+#     # 'rest_framework.renderers.BrowsableAPIRenderer',
+#     # ]
+#     DEFAULT_AUTHENTICATION_CLASSES += [
+#         'portfolio_website.rest_api.dev.DevAuthentication'
+#     ]
 
 REST_FRAMEWORK = {
 
