@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {FeedComponent, PostsComponent, PostDetailComponent, MiniPost, PostsList} from './posts';
+import {FeedComponent, PostsComponent, PostDetailComponent} from './posts';
 import {ProfileBadgeComponent} from './profiles';
 
 // const cors = require('cors');
@@ -34,15 +34,22 @@ if (appEl) {
 
 const e = React.createElement
 
+// const postsEl = document.getElementById('posted')
+// if (postsEl) {
+//   console.log(postsEl.dataset)
+//   const posted = ReactDOM.createRoot(document.getElementById('posted'))
+//   posted.render(
+//     <React.StrictMode>
+//       <PostsComponent username={postsEl.dataset.username} canPost={postsEl.dataset.canPost} /> {/*passing down username from dataset */}
+//     </React.StrictMode>
+//   );
+// }
+
 const postsEl = document.getElementById('posted')
 if (postsEl) {
-  console.log(postsEl.dataset)
   const posted = ReactDOM.createRoot(document.getElementById('posted'))
   posted.render(
-    <React.StrictMode>
-      <PostsComponent username={postsEl.dataset.username} canPost={postsEl.dataset.canPost} /> {/*passing down username from dataset */}
-    </React.StrictMode>
-  );
+    e(PostsComponent, postsEl.dataset)); //pass down dataset as well
 }
 
 //better way of passing down dataset vv
@@ -51,13 +58,6 @@ if (postFeedEl) {
   const postedFeed = ReactDOM.createRoot(document.getElementById('posted-feed'))
   postedFeed.render(
     e(FeedComponent, postFeedEl.dataset)); //pass down dataset as well
-}
-
-const miniPostEl = document.getElementById('posted-mini')
-if (miniPostEl) {
-  const miniPost = ReactDOM.createRoot(document.getElementById('posted-mini'))
-  miniPost.render(
-    e(MiniPost, miniPostEl.dataset)); //pass down dataset as well
 }
 
 //const e = React.createElement //all below done all myself! had to change how done as react has changed since tutorial was published
