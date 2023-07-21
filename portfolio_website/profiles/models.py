@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
+from .validators import validate_file_size
 
 # Create your models here.
 
@@ -13,7 +14,7 @@ class FollowerRelation(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE) #one user associated with one profile, one profile associated with one user
-    picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True)
+    picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True, validators=[validate_file_size]) #validator checks file size
     location = models.CharField(max_length=100, null=True, blank=True)
     bio = models.TextField(blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)

@@ -14,8 +14,9 @@ def profile_update_view(request, *args, **kwargs):
         "email_address": user.email
     }
     my_profile = user.profile #one to one field so i can do this
-    form = ProfileForm(request.POST or None, instance=my_profile, initial=user_data) #instance is what object the form is updating, initial sets the initial values of the input boxes to what is set in user_data dictionary
+    form = ProfileForm(request.POST or None, request.FILES or None, instance=my_profile, initial=user_data) #instance is what object the form is updating (also fillows input boxes with current values on the object), initial sets the initial values of the input boxes to what is set in user_data dictionary
     if form.is_valid():
+        print("nice")
         profile_obj = form.save(commit=False)
         first_name = form.cleaned_data.get('first_name')
         last_name = form.cleaned_data.get('last_name')
@@ -25,6 +26,8 @@ def profile_update_view(request, *args, **kwargs):
         user.email = email_address
         user.save() #done this way in order to save 2 models in 1 form and 1 view
         profile_obj.save()
+    else:
+        print(form.errors)
     context = {
         "form": form,
         "btn_label": "Save",
