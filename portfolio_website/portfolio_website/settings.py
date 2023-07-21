@@ -136,7 +136,7 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR / "static-root" # emulated version of static server
 
 MEDIA_ROOT = BASE_DIR / "media"
-MEDIA_URL = "media/"
+MEDIA_URL = "media/" #IN PRODUCTION I MUST USE A STORAGE SERVICE -- TEMPORARY ONLY (PROOF OF CONCEPT)
 
 CORS_ORIGIN_ALLOW_ALL = True #any website has access to my api
 CORS_URLS_REGEX = r'^/api/.*$'

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {FeedComponent, PostsComponent, PostDetailComponent} from './posts';
+import {FeedComponent, PostsComponent, PostDetailComponent, MiniPost, PostsList} from './posts';
 import {ProfileBadgeComponent} from './profiles';
 
 // const cors = require('cors');
@@ -51,6 +51,13 @@ if (postFeedEl) {
   const postedFeed = ReactDOM.createRoot(document.getElementById('posted-feed'))
   postedFeed.render(
     e(FeedComponent, postFeedEl.dataset)); //pass down dataset as well
+}
+
+const miniPostEl = document.getElementById('posted-mini')
+if (miniPostEl) {
+  const miniPost = ReactDOM.createRoot(document.getElementById('posted-mini'))
+  miniPost.render(
+    e(MiniPost, miniPostEl.dataset)); //pass down dataset as well
 }
 
 //const e = React.createElement //all below done all myself! had to change how done as react has changed since tutorial was published
