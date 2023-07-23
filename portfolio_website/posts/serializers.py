@@ -20,6 +20,7 @@ class PostActionSerializer(serializers.Serializer):
 class PostCreateSerializer(serializers.ModelSerializer): #create only serializer
     user = PublicProfileSerializer(source='user.profile', read_only=True) #source is the object that it should be serializing
     likes = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = Post
         fields = ['user', 'id', 'content', 'likes']
@@ -61,14 +62,33 @@ class PostSerializer(serializers.ModelSerializer): #read only serializer
         return serializer.data
     
 class CommentSerializer(serializers.ModelSerializer): #all me
-    content = serializers.SerializerMethodField
+    user = PublicProfileSerializer(source='user.profile', read_only=True) #source is the object that it should be serializing
+    content = serializers.SerializerMethodField()
+    post = serializers.SerializerMethodField()
 
     class Meta:
         model = PostComment
-        fields = ['id', 'content']
+        fields = ['user', 'id', 'content', 'post']
 
     def get_content(self, obj):
         return obj.content
+    
+    def get_post(self, obj):
+        return obj.post.id
+    
+class CommentCreateSerializer(serializers.ModelSerializer):
+    user = PublicProfileSerializer(source='user.profile', read_only=True) #source is the object that it should be serializing
+    post = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PostComment
+        fields = ['user', 'id', 'content', 'post'] #using content as a regular field allows it to be writable for when creating comment
+
+    def get_content(self, obj):
+        return obj.content
+    
+    def get_post(self, obj):
+        return obj.post.id
     
     def validate_content(self, value): #make a validators.py later possibly, to keep code DRY
         if len(value) > MAX_POST_LENGTH:

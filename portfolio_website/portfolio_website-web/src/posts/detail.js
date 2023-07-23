@@ -1,8 +1,8 @@
 import {useState, createRef} from 'react'
 
 import {ActionBtn} from './buttons'
-
 import {UserDisplay, UserPicture} from '../profiles'
+import {apiPostAction} from './lookup'
 
 export function Post(props) {
     const {post, miniPost} = props // This line extracts the post prop from the props object using destructuring assignment. It allows the component to access the post prop directly without having to reference props.post throughout the component.
@@ -15,6 +15,12 @@ export function Post(props) {
     const isDetail = `${post.id}` === `${urlPostId}`
     const [showCommentForm, setShowCommentForm] = useState(false) //comment form showing or not -- depends if comment button pressed in ActionButton component of action type comment
     const textAreaRef = createRef() //reference for the text area (used to access the value of the text area input)
+    const handleActionBackendEvent = (response, status) => {
+      console.log(response, status)
+      if (status === 200 || status === 201) { //status 200 OR status 201
+        handlePerformAction(response)
+      }
+    }
     const handleCommentFormRender = () => {
       showCommentForm ? setShowCommentForm(false) : setShowCommentForm(true)
     }
@@ -70,7 +76,7 @@ export function Post(props) {
         <textarea ref={textAreaRef} required={true} className='form-control' name='comment'>
 
         </textarea>
-        <button type='submit' className={className}>{display}</button>
+        <button type='submit' className='btn btn-primary btn-small'>Submit</button>
         </form>}
         {isDetail === true ? null : <button className='btn btn-outline-primary btn-sm' onClick={handleLink}>View</button>} {/* if isDetail is true it will render nothing (null) otherwise it will render the view button */}
       </div>

@@ -8,7 +8,7 @@ class PostComment(models.Model): #all me
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey("Post", on_delete=models.CASCADE, related_name="comments")
     timestamp = models.DateTimeField(auto_now_add=True)
-    content = models.TextField(blank=True, null=True)
+    content = models.TextField(blank=False, null=False)
 
     def __str__(self):
         return f"Comment {self.content} by {self.user.username}" #using f string rather than .format

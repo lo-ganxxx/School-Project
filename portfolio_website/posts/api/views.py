@@ -15,7 +15,7 @@ import random #temp for likes
 
 from ..forms import PostForm
 from ..models import Post, PostComment
-from ..serializers import PostSerializer, PostActionSerializer, PostCreateSerializer, CommentSerializer
+from ..serializers import PostSerializer, PostActionSerializer, PostCreateSerializer, CommentCreateSerializer
 # Create your views here.
 
 #these requirements for a function to run like e.g. @api_view are called decorators
@@ -101,9 +101,9 @@ def post_action_view(request, *args, **kwargs):
             serializer = PostSerializer(obj)
             return Response(serializer.data, status=200)
         elif action == "comment": #need to make a way to type stuff
-            comment_serializer = CommentSerializer(content=content) #uses data from the POST request
-            if comment_serializer.is_valid(raise_exception=True): #if form doesnt return a ValidationError from validate_content function in CommentSerializer class
-                comment_serializer.save(user = request.user, post=obj) #save the Post object to database with user set as the POST requests user and the Post object that the comment is related to set as the post the action is on
+            comment_serializer = CommentCreateSerializer(data={"content": content}) #uses data from the POST request
+            if comment_serializer.is_valid(raise_exception=True): #if form doesnt return a ValidationError from validate_content function in CommentCreateSerializer class
+                comment_serializer.save(user = request.user, post=obj) #save the Comment object to database with user set as the POST requests user and the Post object that the comment is related to set as the post the action is on
                 print(obj.comments.all())
                 serializer = PostSerializer(obj)
                 return Response(serializer.data, status=201)

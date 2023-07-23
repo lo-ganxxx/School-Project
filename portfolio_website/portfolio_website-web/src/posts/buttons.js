@@ -11,7 +11,7 @@ export function ActionBtn(props) {
     const actionDisplay = action.display ? action.display : 'Action' // the display of the button
     const comment_upload = false //temp for testing
     //button logic
-    const [showUpload, setShowUpload] = useState(false)
+    // const [showUpload, setShowUpload] = useState(false)
     const textAreaRef = createRef() //reference for the text area (used to access the value of the text area input)
     //const {didPost} = props //NEED TO MAKE A WAY TO HANDLE NEW COMMENTS
     // const handleBackendUpdate = (response, status) => { //backend api response handler
