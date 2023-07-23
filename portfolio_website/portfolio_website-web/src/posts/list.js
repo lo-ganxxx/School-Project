@@ -53,6 +53,6 @@ export function PostsList(props) {
       return <Post post={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-${item.id}`} miniPost={miniPost} /> //rendering post - render in miniPost form if it is truthy
     })}
     {nextUrl !== null && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load more...</button>}
-    <a href={window.location.href} className='btn btn-secondary my-2'>Back to top</a>
+    <a href="#" className='btn btn-secondary my-2'>Back to top</a> {/* NEW: # takes to top of current page OLD:basically just reloads page (href goes to current pages url so works on any page) */}
     </React.Fragment>
   }

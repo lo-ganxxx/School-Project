@@ -69,3 +69,8 @@ class CommentSerializer(serializers.ModelSerializer): #all me
 
     def get_content(self, obj):
         return obj.content
+    
+    def validate_content(self, value): #make a validators.py later possibly, to keep code DRY
+        if len(value) > MAX_POST_LENGTH:
+            raise serializers.ValidationError("This comment is too long")
+        return value

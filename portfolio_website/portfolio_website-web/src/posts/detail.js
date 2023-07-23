@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, createRef} from 'react'
 
 import {ActionBtn} from './buttons'
 
@@ -6,8 +6,6 @@ import {UserDisplay, UserPicture} from '../profiles'
 
 export function Post(props) {
     const {post, miniPost} = props // This line extracts the post prop from the props object using destructuring assignment. It allows the component to access the post prop directly without having to reference props.post throughout the component.
-    console.log("post: ", post)
-    console.log("posts user: ", post.user)
     const [actionPost, setActionPost] = useState(props.post ? props.post : null)
     const className = props.className ? props.className : 'col-10 max-auto col-md-6' // if the props object has a className prop it will use that, otherwise will use default value
     var path = window.location.pathname //getting pages path
@@ -15,6 +13,18 @@ export function Post(props) {
     var match = path.match(idRegex)
     const urlPostId = match ? match.groups.postid : -1
     const isDetail = `${post.id}` === `${urlPostId}`
+    const [showCommentForm, setShowCommentForm] = useState(false) //comment form showing or not -- depends if comment button pressed in ActionButton component of action type comment
+    const textAreaRef = createRef() //reference for the text area (used to access the value of the text area input)
+    const handleCommentFormRender = () => {
+      showCommentForm ? setShowCommentForm(false) : setShowCommentForm(true)
+    }
+    const handleCommentFormSubmit = (event) => {
+      event.preventDefault()
+      const newVal = textAreaRef.current.value //the text being submitted (to comment)
+      //backend api request
+      apiPostAction(post.id, 'comment', handleActionBackendEvent, newVal) //apiPostAction with the text areas value being the content of the comment
+      textAreaRef.current.value = '' //clear the text box
+    }
     const handleLink = (event) => {
       event.preventDefault()
       window.location.href = `/${post.id}` //redirects user to post detail page of the post they clicked on (using the posts id)
@@ -55,7 +65,13 @@ export function Post(props) {
       {actionPost && <div className = 'btn btn-group px-0'>
         <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "like", display: "Likes"}}/>
         <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "unlike", display: "Unlike"}}/>
-        <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "comment", display: "Comment"}}/>
+        <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "comment", display: "Comment"}} didCommentForm={handleCommentFormRender}/>
+        {showCommentForm && <form onSubmit={handleCommentFormSubmit}>
+        <textarea ref={textAreaRef} required={true} className='form-control' name='comment'>
+
+        </textarea>
+        <button type='submit' className={className}>{display}</button>
+        </form>}
         {isDetail === true ? null : <button className='btn btn-outline-primary btn-sm' onClick={handleLink}>View</button>} {/* if isDetail is true it will render nothing (null) otherwise it will render the view button */}
       </div>
     }

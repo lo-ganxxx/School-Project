@@ -27,7 +27,7 @@ export function apiPostFeed(callback, nextUrl) { // all posts by the user and us
     backendLookup("GET", endpoint, callback)
   }
 
-export function apiPostAction(postId, action, callback) {
-    const data = {id: postId, action: action}
+export function apiPostAction(postId, action, callback, content) {
+    const data = {id: postId, action: action, content: content}
     backendLookup("POST", "/posts/action/", callback, data)
   }
