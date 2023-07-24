@@ -22,7 +22,7 @@ export function UserDisplay(props) { // will return render for username and name
 
 export function UserPicture(props) { // will return users profile picture
   const {user, hideLink} = props
-  const userIdSpan = <span className='mx-1 px-3 py-2 rounded-circle bg-dark text-white'>
+  const userIdSpan = <span className='mx-1 px-3 py-2 rounded-circle bg-dark text-white'> {/* if users dont want to upload picture, add option to customize colour of circle? i.e. bg-success, bg-warning */}
   {user.username[0]} {/* first character of the username */}
   </span>
   return hideLink === true ? userIdSpan : <UserLink username={user.username}>{userIdSpan}</UserLink>
