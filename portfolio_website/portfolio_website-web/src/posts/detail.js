@@ -68,17 +68,19 @@ export function Post(props) {
         <UserDisplay user={post.user} includeFullName /> {/* will add later that it will not includeFullName if the profile is private possibly? */}
       </p>
       <p>{post.content} - {post.id}</p>
-      {actionPost && <div className = 'btn btn-group px-0'>
+      {actionPost && <div>
+        <div className = 'btn btn-group px-0'>
         <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "like", display: "Likes"}}/>
         <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "unlike", display: "Unlike"}}/>
         <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "comment", display: "Comment"}} didCommentForm={handleCommentFormRender}/>
+        {isDetail === true ? null : <button className='btn btn-outline-primary btn-sm' onClick={handleLink}>View</button>} {/* if isDetail is true it will render nothing (null) otherwise it will render the view button */}
+        </div>
         {showCommentForm && <form onSubmit={handleCommentFormSubmit}>
         <textarea ref={textAreaRef} required={true} className='form-control' name='comment'>
 
         </textarea>
-        <button type='submit' className='btn btn-primary btn-small'>Submit</button>
+        <button type='submit' className='btn btn-secondary btn-small'>Submit</button>
         </form>}
-        {isDetail === true ? null : <button className='btn btn-outline-primary btn-sm' onClick={handleLink}>View</button>} {/* if isDetail is true it will render nothing (null) otherwise it will render the view button */}
       </div>
     }
     </div>
