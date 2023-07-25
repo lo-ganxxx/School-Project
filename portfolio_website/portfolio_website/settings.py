@@ -119,11 +119,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Pacific/Auckland' #new zealand timezone https://en.wikipedia.org/wiki/List_of_tz_database_time_zones (wouldnt't change from utc so just disable USE_TZ so it now uses users local timezone)
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False #use users local timezone if set to False, otherwise use TIMEZONE
 
 
 # Static files (CSS, JavaScript, Images)

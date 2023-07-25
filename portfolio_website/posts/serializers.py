@@ -1,6 +1,7 @@
 from django.conf import settings
 from rest_framework import serializers
 from profiles.serializers import PublicProfileSerializer
+import datetime
 
 MAX_POST_LENGTH = settings.MAX_POST_LENGTH
 POST_ACTION_OPTIONS = settings.POST_ACTION_OPTIONS
@@ -65,16 +66,21 @@ class CommentSerializer(serializers.ModelSerializer): #all me
     user = PublicProfileSerializer(source='user.profile', read_only=True) #source is the object that it should be serializing
     content = serializers.SerializerMethodField()
     post = serializers.SerializerMethodField()
+    timestamp = serializers.SerializerMethodField()
 
     class Meta:
         model = PostComment
-        fields = ['user', 'id', 'content', 'post']
+        fields = ['user', 'id', 'content', 'post', 'timestamp']
 
     def get_content(self, obj):
         return obj.content
     
     def get_post(self, obj):
         return obj.post.id
+    
+    def get_timestamp(self, obj):
+        #hour(12-hour clock):minute AM or PM, day/month/year
+        return obj.timestamp.strftime("%I:%M%p, %d/%m/%Y") #formatting DateTimeField data to be readable as a string - timezone is set in settings.py
     
 class CommentCreateSerializer(serializers.ModelSerializer):
     user = PublicProfileSerializer(source='user.profile', read_only=True) #source is the object that it should be serializing
