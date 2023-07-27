@@ -44,8 +44,12 @@ export function FeedList(props) {
       }
     }
 
+    const handleNewComment = (response) => {
+      window.location.href = `/${response.post}` //redirects user to post detail page of the post they commented on (using the posts id)
+    }
+
     return <React.Fragment>{posts.map((item, index)=>{ //iterates through list of posts
-      return <Post post={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-${item.id}`} /> //rendering post
+      return <Post post={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-${item.id}`} didComment={handleNewComment} /> //rendering post
     })}
     {nextUrl !== null && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load more...</button>}
     </React.Fragment>

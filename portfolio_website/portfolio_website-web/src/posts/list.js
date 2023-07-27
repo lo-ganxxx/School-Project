@@ -49,8 +49,12 @@ export function PostsList(props) {
       }
     }
 
+    const handleNewComment = (response) => {
+      window.location.href = `/${response.post}` //redirects user to post detail page of the post they commented on (using the posts id)
+    }
+
     return <React.Fragment>{posts.map((item, index)=>{ //iterates through list of posts
-      return <Post post={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-${item.id}`} miniPost={miniPost} /> //rendering post - render in miniPost form if it is truthy
+      return <Post post={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-${item.id}`} miniPost={miniPost} didComment={handleNewComment} /> //rendering post - render in miniPost form if it is truthy
     })}
     {nextUrl !== null && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load more...</button>}
     <a href="#" className='btn btn-secondary my-2'>Back to top</a> {/* NEW: # takes to top of current page OLD:basically just reloads page (href goes to current pages url so works on any page) */}
