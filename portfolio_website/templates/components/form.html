@@ -1,4 +1,4 @@
 <form method='POST' enctype="multipart/form-data"> {% csrf_token %} {% comment %} The enctype="multipart/form-data" attribute is specifically needed when you have a file input field (e.g., for image uploads) in the form. For regular form submissions that don't include files, this attribute is harmless and will not affect their functionality. {% endcomment %}
     {{ form.as_p }} {% comment %} renders passed form as a paragraph {% endcomment %}
-    <button type='submit' class='btn btn-secondary'>{% if btn_label %}{{btn_label}} {% else %}Save{% endif %}</button>
+    <button type='submit' class='btn btn-warning'>{% if btn_label %}{{btn_label}} {% else %}Save{% endif %}</button>
 </form>

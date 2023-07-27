@@ -2,13 +2,29 @@
 
 {% block content %}
 
-<div class='col-10 col-md-4 mx-auto'>
+<main class="form-signin col-10 col-md-4 mx-auto">
+    <form method="POST"> {% csrf_token %}
+      <img class="mb-4" src="https://swingsearch.com/wp-content/uploads/2020/02/cropped-logo-new-p.png" alt="" width="72" height="57">
+      <h1 class="h3 mb-3 fw-normal">{{ title }}</h1>
+  
+      {% for field in form %}
+      <div class="form-floating">
+        <input type="{{ field.field.widget.input_type }}" class="form-control" id="floatingInput" placeholder="{{ field.label }}" name="{{ field.name }}">
+        <label for="floatingInput">{{ field.label }}</label> {% comment %} the for="" associates it with the input box using id {% endcomment %}
+      </div>
+      {% endfor %}
+
+      <button class="btn btn-primary w-100 py-2" type="submit">{{ btn_label }}</button>
+    </form>
+  </main>
+
+{% comment %} <div class='col-10 col-md-4 mx-auto'>
     <h1>{{ title }}</h1>
     {% if description %}
     <p>{{ description }} </p>
     {% endif %}
     {% include "components/form.html" with form=form btn_label=btn_label %}
     
-</div>
+</div> {% endcomment %}
 
 {% endblock content%}

@@ -13,8 +13,8 @@ def login_view(request, *args, **kwargs):
         return redirect("/") #redirects to home page
     context = {
         "form": form,
-        "btn_label": "Login",
-        "title": "Login"
+        "btn_label": "Sign in",
+        "title": "Please sign in"
     }
     return render(request, "accounts/auth.html", context)
 
