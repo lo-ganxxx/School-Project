@@ -85,16 +85,17 @@ class CommentSerializer(serializers.ModelSerializer): #all me
 class CommentCreateSerializer(serializers.ModelSerializer):
     user = PublicProfileSerializer(source='user.profile', read_only=True) #source is the object that it should be serializing
     post = serializers.SerializerMethodField()
+    timestamp = serializers.SerializerMethodField()
 
     class Meta:
         model = PostComment
-        fields = ['user', 'id', 'content', 'post'] #using content as a regular field allows it to be writable for when creating comment
-
-    def get_content(self, obj):
-        return obj.content
+        fields = ['user', 'id', 'content', 'post', 'timestamp'] #using content as a regular field allows it to be writable for when creating comment
     
     def get_post(self, obj):
         return obj.post.id
+    
+    def get_timestamp(self, obj):
+        return "Now" #when new comment rendered on frontend it will simply display time of creation as "Now"
     
     def validate_content(self, value): #make a validators.py later possibly, to keep code DRY
         if len(value) > MAX_POST_LENGTH:

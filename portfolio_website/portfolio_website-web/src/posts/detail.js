@@ -5,7 +5,7 @@ import {UserDisplay, UserPicture} from '../profiles'
 import {apiPostAction} from './lookup'
 
 export function Post(props) {
-    const {post, miniPost} = props // This line extracts the post prop from the props object using destructuring assignment. It allows the component to access the post prop directly without having to reference props.post throughout the component.
+    const {post, miniPost, didComment} = props // This line extracts the post prop from the props object using destructuring assignment. It allows the component to access the post prop directly without having to reference props.post throughout the component.
     const [actionPost, setActionPost] = useState(props.post ? props.post : null)
     const className = props.className ? props.className : 'col-10 max-auto col-md-6' // if the props object has a className prop it will use that, otherwise will use default value
     var path = window.location.pathname //getting pages path
@@ -15,10 +15,12 @@ export function Post(props) {
     const isDetail = `${post.id}` === `${urlPostId}`
     const [showCommentForm, setShowCommentForm] = useState(false) //comment form showing or not -- depends if comment button pressed in ActionButton component of action type comment
     const textAreaRef = createRef() //reference for the text area (used to access the value of the text area input)
-    const handleActionBackendEvent = (response, status) => {
-      console.log(response, status)
-      if (status === 200 || status === 201) { //status 200 OR status 201
-        handlePerformAction(response)
+    const handleNewComment = (response, status) => {
+      if (status === 201) { //if new comment was successfully created
+        didComment(response) //triggers handleNewComment callback
+      } else {
+        console.log(response)
+        alert("An error occured, please try again")
       }
     }
     const handleCommentFormRender = () => {
@@ -28,7 +30,7 @@ export function Post(props) {
       event.preventDefault()
       const newVal = textAreaRef.current.value //the text being submitted (to comment)
       //backend api request
-      apiPostAction(post.id, 'comment', handleActionBackendEvent, newVal) //apiPostAction with the text areas value being the content of the comment
+      apiPostAction(post.id, 'comment', handleNewComment, newVal) //apiPostAction with the text areas value being the content of the comment
       textAreaRef.current.value = '' //clear the text box
     }
     const handleLink = (event) => {
