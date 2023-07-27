@@ -39,6 +39,7 @@ class PostSerializer(serializers.ModelSerializer): #read only serializer
     likes = serializers.SerializerMethodField(read_only=True)
     content = serializers.SerializerMethodField(read_only=True)
     comments = serializers.SerializerMethodField(read_only=True)
+    comment_count = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Post
@@ -48,7 +49,8 @@ class PostSerializer(serializers.ModelSerializer): #read only serializer
                 'content',
                 'likes',
                 'comments',
-                'timestamp'
+                'timestamp',
+                'comment_count'
                 ]
 
     def get_likes(self, obj):
@@ -62,11 +64,14 @@ class PostSerializer(serializers.ModelSerializer): #read only serializer
         serializer = CommentSerializer(qs, many=True)
         return serializer.data
     
+    def get_comment_count(self, obj):
+        return obj.comments.count()
+    
 class CommentSerializer(serializers.ModelSerializer): #all me
     user = PublicProfileSerializer(source='user.profile', read_only=True) #source is the object that it should be serializing
-    content = serializers.SerializerMethodField()
-    post = serializers.SerializerMethodField()
-    timestamp = serializers.SerializerMethodField()
+    content = serializers.SerializerMethodField(read_only=True)
+    post = serializers.SerializerMethodField(read_only=True)
+    timestamp = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = PostComment
@@ -84,8 +89,8 @@ class CommentSerializer(serializers.ModelSerializer): #all me
     
 class CommentCreateSerializer(serializers.ModelSerializer):
     user = PublicProfileSerializer(source='user.profile', read_only=True) #source is the object that it should be serializing
-    post = serializers.SerializerMethodField()
-    timestamp = serializers.SerializerMethodField()
+    post = serializers.SerializerMethodField(read_only=True)
+    timestamp = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = PostComment
@@ -94,7 +99,7 @@ class CommentCreateSerializer(serializers.ModelSerializer):
     def get_post(self, obj):
         return obj.post.id
     
-    def get_timestamp(self, obj):
+    def get_timestamp(self, obj): #when i remove obj it causes an error when trying to create comment - TypeError: CommentCreateSerializer.get_timestamp() takes 1 positional argument but 2 were given
         return "Now" #when new comment rendered on frontend it will simply display time of creation as "Now"
     
     def validate_content(self, value): #make a validators.py later possibly, to keep code DRY

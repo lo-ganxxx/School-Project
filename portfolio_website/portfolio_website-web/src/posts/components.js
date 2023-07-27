@@ -43,6 +43,7 @@ export function PostsComponent(props) {
 }
 
 export function PostDetailComponent(props) {
+    const [postCommentCount, setPostCommentCount] = useState([]) //amount of comments on the post - int
     const [commentsInit, setCommentsInit] = useState([]) //inital comments
     const [comments, setComments] = useState([]) //all comments
     const [postDidSet, setPostDidSet] = useState(false) //used to prevent constant lookups
@@ -62,6 +63,7 @@ export function PostDetailComponent(props) {
           if (status === 200){
             // setNextUrl(response.next) //setting next url to next page url from the pagination response
             setPost(response) //sets the post that is being viewed in detail
+            setPostCommentCount(response.comment_count) //sets comment count using the value from postserializer
             setCommentsInit(response.comments) //updates comments array with initial comments (gotten from the postserializer response)
             setPostDidSet(true)
           } else {
@@ -70,18 +72,19 @@ export function PostDetailComponent(props) {
         }
         apiPostDetail(postId, handleBackendLookup) //do the lookup in order to allow for post to be set
     }
-    }, [setCommentsInit, postDidSet, setPostDidSet, postId])
+    }, [setCommentsInit, postDidSet, setPostDidSet, postId, setPostCommentCount])
 
   const handleNewComment = (newComment) => {
     let tempNewComments = [...newComments]
     tempNewComments.unshift(newComment) //sends this new comment into the tempNewComments list (at beginning of list/array) (push -> end of list, unshift -> beginning of list)
     setNewComments(tempNewComments) //updates new comments array
+    setPostCommentCount(postCommentCount + 1) //adds one to the rendered comment count
   }
 
   return post === null ? null : <div>
   <Post post={post} className={props.className} didComment={handleNewComment}/>
   <div class="my-3 p-3 bg-body rounded shadow-sm">
-    <h6 class="border-bottom pb-2 mb-0">Comments</h6>
+    <h6 class="border-bottom pb-2 mb-0">Comments - {postCommentCount}</h6>
     {/* make it iterate through all the comments on the post and render them all) */}
     {comments.map((item, index)=>{ //iterates through list of comments on the post
       return <Comment comment={item} key={`${index}-${item.id}`} /> //rendering comment
