@@ -31,7 +31,7 @@ export function PostsComponent(props) {
   }
   return <div className={props.className}>
     {canPost === true && <PostCreate didPost={handleNewPost} className='col-md-4 mx-auto col-10' />}{/* Will only render if canPost is equal to true */}
-    <div class="album py-5 bg-light">
+    <div class="album py-5">
         <div class="container">
 
           <div class="row">

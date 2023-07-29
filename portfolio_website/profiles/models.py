@@ -20,7 +20,7 @@ class Profile(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True) #most recent time it was saved
     followers = models.ManyToManyField(User, related_name="following", blank=True) #related name is "following" as from the followers perspective this profile is one they are folllowing i.e. user.following.all() -> all users a user follows
-    
+    #occupation? qualifications?
 
 def user_did_save(sender, instance, created, *args, **kwargs):
     if created:
