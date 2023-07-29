@@ -2,13 +2,13 @@
 
 {% block content %}
 
-<div class='col-10 col-md-4 mx-auto'>
+{% comment %} <div class='col-10 col-md-4 mx-auto'>
     <h1>{{ title }}</h1>
     {% if description %}
     <p>{{ description }} </p>
-    {% endif %}
+    {% endif %} {% endcomment %}
     {% include "components/form.html" with form=form btn_label=btn_label %}
     
-</div>
+{% comment %} </div> {% endcomment %}
 
 {% endblock content%}

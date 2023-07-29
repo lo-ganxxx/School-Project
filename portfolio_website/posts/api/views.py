@@ -104,7 +104,6 @@ def post_action_view(request, *args, **kwargs):
             comment_serializer = CommentCreateSerializer(data={"content": content}) #uses data from the POST request
             if comment_serializer.is_valid(raise_exception=True): #if form doesnt return a ValidationError from validate_content function in CommentCreateSerializer class
                 comment_serializer.save(user = request.user, post=obj) #save the Comment object to database with user set as the POST requests user and the Post object that the comment is related to set as the post the action is on
-                print(obj.comments.all())
                 #serializer = PostSerializer(obj)
                 return Response(comment_serializer.data, status=201)
             return Response({}, status=400) #if not valid

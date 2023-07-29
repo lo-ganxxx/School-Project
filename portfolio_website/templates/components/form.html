@@ -1,4 +1,21 @@
-<form method='POST' enctype="multipart/form-data"> {% csrf_token %} {% comment %} The enctype="multipart/form-data" attribute is specifically needed when you have a file input field (e.g., for image uploads) in the form. For regular form submissions that don't include files, this attribute is harmless and will not affect their functionality. {% endcomment %}
-    {{ form.as_p }} {% comment %} renders passed form as a paragraph {% endcomment %}
+{% comment %} <form method='POST' enctype="multipart/form-data"> {% csrf_token %} {% comment %} The enctype="multipart/form-data" attribute is specifically needed when you have a file input field (e.g., for image uploads) in the form. For regular form submissions that don't include files, this attribute is harmless and will not affect their functionality. {% endcomment %}
+    {% comment %} {{ form.as_p }} renders passed form as a paragraph
     <button type='submit' class='btn btn-warning'>{% if btn_label %}{{btn_label}} {% else %}Save{% endif %}</button>
-</form>
+</form> {% endcomment %}
+<main class="form-signin col-10 col-md-4 mx-auto">
+    <form method="POST" enctype="multipart/form-data"> {% csrf_token %}
+      <img class="mb-4" src="https://swingsearch.com/wp-content/uploads/2020/02/cropped-logo-new-p.png" alt="" width="72" height="57">
+      <h1 class="h3 mb-3 fw-normal">{{ title }}</h1>
+  
+      {% for field in form %}
+      <div class="form-floating">
+        <input type="{{ field.field.widget.input_type }}" class="form-control" id="floatingInput" placeholder="{{ field.label }}" name="{{ field.name }}" {% if field.value is not none %}value="{{ field.value }}"{% endif %}> {% comment %} value is the value that is in the input box by default when form loaded (field.value the fields current value for object that is being edited) only is set as an attribute if there is a field.value existing {% endcomment %}
+        <label for="floatingInput">{{ field.label }}</label> {% comment %} the for="" associates it with the input box using id {% endcomment %}
+      </div>
+      {% endfor %}
+
+      <button class="btn btn-primary w-100 py-2" type="submit">{{ btn_label }}</button>
+    </form>
+</main>
+
+{% comment %} value="{% if field.value is not none %}{{ field.value }} {% else %}{% endif %}" previous method i was using (worse) {% endcomment %}
