@@ -62,10 +62,10 @@ export function Post(props) {
     } else { //normal post rendering otherwise
       return <div className={className}>
       <div className='d-flex'>
-        <div className=''>
+        <div className='ms-1'> {/* margin of 1 pixel from start (left) */}
           <UserPicture user={post.user} pictureSize="50px" />
         </div>
-        <div className='col-11'>
+        <div className='col-11 ms-1'>
       <p>
         <UserDisplay user={post.user} includeFullName /> {/* will add later that it will not includeFullName if the profile is private possibly? */}
       </p>
@@ -100,7 +100,7 @@ export function Comment(props) {
       <div>
       <UserPicture user={comment.user} pictureSize="50px" />
       </div>
-      <p class="pb-3 mb-0 small lh-sm border-bottom w-100">
+      <p class="pb-3 mb-0 small lh-sm border-bottom w-100 ms-1">
       <div class="d-flex justify-content-between">
         <strong class="d-block text-gray-dark"><UserDisplay user={comment.user} /></strong>
         {comment.timestamp}

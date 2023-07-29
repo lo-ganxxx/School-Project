@@ -13,8 +13,11 @@ def login_view(request, *args, **kwargs):
         return redirect("/") #redirects to home page
     context = {
         "form": form,
+        "description": "Don't have an account?",
+        "link_display": "Register",
+        "link_url": "register",
         "btn_label": "Sign in",
-        "title": "Please sign in"
+        "title": "Sign in"
     }
     return render(request, "accounts/auth.html", context)
 
@@ -43,6 +46,7 @@ def register_view(request, *args, **kwargs):
 
     context = {
         "form": form,
+        "description": "Create an account to start posting today!",
         "btn_label": "Register",
         "title": "Register"
     }

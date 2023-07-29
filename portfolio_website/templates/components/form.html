@@ -6,13 +6,20 @@
     <form method="POST" enctype="multipart/form-data"> {% csrf_token %}
       <img class="mb-4" src="https://swingsearch.com/wp-content/uploads/2020/02/cropped-logo-new-p.png" alt="" width="72" height="57">
       <h1 class="h3 mb-3 fw-normal">{{ title }}</h1>
-  
+
+      {% if form.errors %} <h5 class="mb-3 fw-normal text-danger">{{ form.errors }}</h5> {% endif %}
+
       {% for field in form %}
       <div class="form-floating">
         <input type="{{ field.field.widget.input_type }}" class="form-control" id="floatingInput" placeholder="{{ field.label }}" name="{{ field.name }}" {% if field.value is not none %}value="{{ field.value }}"{% endif %}> {% comment %} value is the value that is in the input box by default when form loaded (field.value the fields current value for object that is being edited) only is set as an attribute if there is a field.value existing {% endcomment %}
         <label for="floatingInput">{{ field.label }}</label> {% comment %} the for="" associates it with the input box using id {% endcomment %}
       </div>
       {% endfor %}
+
+      <div class="mt-1 mb-1">
+        {% if description %} <span>{{ description }}</span> {% endif %}
+        {% if link_display and link_url %} <a class="link-opacity-100" href="/{{ link_url }}">{{ link_display }}</a> {% endif %} 
+      </div>
 
       <button class="btn btn-primary w-100 py-2" type="submit">{{ btn_label }}</button>
     </form>
