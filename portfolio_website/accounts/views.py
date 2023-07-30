@@ -7,10 +7,14 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 # Create your views here.
 def login_view(request, *args, **kwargs):
     form = AuthenticationForm(request, data=request.POST or None)
+    next_url = request.GET.get('next' or None) #if a next url was set in the query parameters (i.e. /login?next=profile/logan)
     if form.is_valid(): #logs in successfully
         user_ = form.get_user()
         login(request, user_)
-        return redirect("/") #redirects to home page
+        if next_url:
+            return redirect(f"/{next_url}") #redirects to url set in query parameters
+        else:
+            return redirect("/") #redirects to home page
     context = {
         "form": form,
         "description": "Don't have an account?",

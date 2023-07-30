@@ -27,7 +27,10 @@ function ProfileBadge(props) {
             </div>
             <div class="col d-inline">
                 <svg class="bi" width="16" height="16"></svg>
-                <button className='btn btn-secondary' onClick={handleFollowToggle}>{currentVerb}</button>
+                {user.can_be_followed === "follow" ? <button className='btn btn-secondary' onClick={handleFollowToggle}>{currentVerb}</button> : //if get_can_be_followed returns "follow" (user is followable)
+                user.can_be_followed === "edit" ? <a className='btn btn-secondary' href='/profile/edit'>Edit profile</a> ://if get_can_be_followed returns "edit" (the profile is the requests user's)
+                null} {/* error or not authenticated */}
+                {/* <button className='btn btn-secondary' onClick={handleFollowToggle}>{currentVerb}</button> */}
             </div>
             </h2>
             <hr class="dropdown-divider"></hr>

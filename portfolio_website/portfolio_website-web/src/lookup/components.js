@@ -35,7 +35,8 @@ export function backendLookup(method, endpoint, callback, data) {
       const detail = xhr.response.detail
       if (detail === "Authentication credentials were not provided.") {
         if (window.location.href.indexOf("login") === -1) { // if "login" is not in the current pages url -- indexOf checks if the url contains the given string, if it is not in the url at all it will return -1
-          window.location.href = "/login?showLoginRequired=true" //redirect user to login page
+          const next_url = window.location.pathname.substring(1) //relative path of the current URL (without domain etc) substring removes the forward slash at start to avoid errors
+          window.location.href = `login/?next=${next_url}` //redirect user to login page with next url set as a query parameter
         }
       }
     }

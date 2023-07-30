@@ -51,7 +51,8 @@ export function Post(props) {
         {actionPost && <div className = 'btn-group'>
             <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "like", display: "Likes"}} className="btn btn-sm btn-outline-secondary"/>
             <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "unlike", display: "Unlike"}} className="btn btn-sm btn-outline-secondary"/>
-            <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "comment", display: "Comment"}} className="btn btn-sm btn-outline-secondary"/>
+            {/* <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "comment", display: "Comment"}} className="btn btn-sm btn-outline-secondary"/> causes error because no input - looks weird when adding input box*/}
+            <button className="btn btn-sm btn-outline-secondary" onClick={handleLink}>Comment</button>
             {isDetail === true ? null : <button className="btn btn-sm btn-outline-secondary" onClick={handleLink}>View</button>}
           </div>}
           <small class="text-muted">{post.user.username}</small> {/* these posts are for the profiles so wont need to be links */}
