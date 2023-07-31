@@ -40,7 +40,7 @@ function ProfileBadge(props) {
             </div>
             <div class="col dropdown-item d-inline">
                 <svg class="bi" width="16" height="16"></svg>
-                <b><DisplayCount>{user.follower_count}</DisplayCount></b> {user.following_count === 1 ? "follower" : "followers"} {/* on click use modular to show list of followers? */}
+                <b><DisplayCount>{user.follower_count}</DisplayCount></b> {user.follower_count === 1 ? "follower" : "followers"} {/* on click use modular to show list of followers? */}
             </div>
             <div class="col dropdown-item d-inline">
                 <svg class="bi" width="16" height="16"></svg>
