@@ -2,6 +2,20 @@
 
 {% block content %}
 
-<div id='posted'></div>
+<div class="px-4 py-5 my-5 text-center">
+    <img class="d-block mx-auto mb-4" src="https://swingsearch.com/wp-content/uploads/2020/02/cropped-logo-new-p.png" alt="" width="72" height="72">
+    <h1 class="display-5 fw-bold text-body-emphasis">Global Posts</h1>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead mb-4">At Posted, our mission is to connect you with the latest and most diverse job opportunities from all corners of the globe. No matter where you are or what you're searching for, we've got you covered! On this page, you can browse and access all the freshest global posts, all in one place. From open positions to general chit-chat, we are dedicated to keeping you up-to-date with the working world.</p>
+      <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+        {% if not request.user.is_authenticated %} {% comment %} if user not logged in {% endcomment %}
+        <a href="/login" class="btn btn-primary btn-lg px-4 gap-3">Login</a>
+        <a href="/register" class="btn btn-outline-secondary btn-lg px-4">Register</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+<div id='posted' data-can-post='false'></div>
 
 {% endblock content %}

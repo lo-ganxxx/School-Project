@@ -24,6 +24,7 @@ from accounts.views import (
     login_view,
     logout_view,
     register_view,
+    home_view_with_register
 )
 
 from posts.views import (
@@ -44,6 +45,7 @@ urlpatterns = [
     path('profile/', include('profiles.urls')),
     path('api/posts/', include('posts.api.urls')),
     path('api/profile/', include('profiles.api.urls')),
+    path('newhome', home_view_with_register),
 ]
 
 if settings.DEBUG:
