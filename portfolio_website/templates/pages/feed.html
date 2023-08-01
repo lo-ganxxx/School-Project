@@ -12,7 +12,7 @@
     <div class="col-lg-6 mx-auto">
       <p class="lead mb-4">We are excited to introduce you to our cutting-edge job finding social media platform! As you step into our vibrant community, you are now part of a worldwide network of opportunities and possibilities. With Posted you can build professional relationships and expand your network! Our platform allows you to interact with employers, industry professionals, and fellow job seekers, increasing your chances of landing the perfect job as well as making some new friends along the way.</p>
       <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
-        <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Login</button>
+        <a href="/login" class="btn btn-primary btn-lg px-4 me-sm-3">Login</a>
         <button type="button" class="btn btn-outline-secondary btn-lg px-4">Our story</button>
       </div>
     </div>
@@ -31,6 +31,31 @@
         <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Sign up today and begin posting</h1>
         <p class="col-lg-10 fs-4">Register now and craft a compelling profile to showcase your skills, experience, and accomplishments. Let employers and recruiters discover your unique talents and increase your chances of landing your dream job.</p>
       </div>
+      {% comment %} static form (currently unfunctional) or use form template? {% endcomment %}
+      {% comment %} <div class="col-md-10 mx-auto col-lg-5">
+        <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary" method="POST"> {% csrf_token %}
+          <div class="form-floating mb-3">
+            <input type="username" class="form-control" id="floatingInput" placeholder="name@example.com" name="username">
+            <label for="floatingInput">Username</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password1">
+            <label for="floatingPassword">Password</label>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Confirm password" name="password2">
+            <label for="floatingPassword">Confirm password</label>
+          </div>
+          <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" value="remember-me"> Remember me
+            </label>
+          </div>
+          <button class="w-100 btn btn-lg btn-primary" type="submit">Sign up</button>
+          <hr class="my-4">
+          <small class="text-body-secondary">By clicking Sign up, you agree to the terms of use.</small>
+        </form>
+      </div>  {% endcomment %}
         {% include "components/form.html" %}
     </div>
   </div>
