@@ -54,23 +54,7 @@ def register_view(request, *args, **kwargs):
         "btn_label": "Register",
         "title": "Register"
     }
-    return render(request, "accounts/auth.html", context)
-
-def home_view_with_register(request, *args, **kwargs): #INTEGRATE THIS INTO NORMAL REGISTER VIEW TO MAKE CODE MORE DRY
-    form = UserCreationForm(request.POST or None)
-    if form.is_valid():
-        user = form.save(commit=True) #saves the user to the database
-        user.set_password(form.cleaned_data.get("password1")) #sets password (encrytped)
-        #send a confirmation email to verify their account??? could add later.
-        new_user = authenticate(username=form.cleaned_data['username'],
-                                password=form.cleaned_data['password1']) #authenticates that credentials are correct
-        login(request, new_user) #logs them into account they just created
-        return redirect("/")
-
-    context = {
-        "form": form,
-        "description": "Create an account to start posting today!",
-        "btn_label": "Register",
-        "title": "Register"
-    }
-    return render(request, "pages/feed.html", context)
+    if request.path == '/register/': #if its the register page
+        return render(request, "accounts/auth.html", context)
+    else: #if its just the home page (which has register form on it)
+        return render(request, "pages/feed.html", context)
