@@ -1,18 +1,21 @@
 import {UserPicture, UserDisplay} from "./components"
+import {DisplayCount} from "./utils"
 
 export function ProfileInfo(props) { //info box for profiles that appears on search results list
     const {profile} = props
 
-    return <div class="d-flex text-body-secondary pt-3">
-        <div>
-            <UserPicture user={profile} pictureSize="50px" />
-        </div>
-        <p class="pb-3 mb-0 small lh-sm border-bottom w-100 ms-1">
-            <div class="d-flex justify-content-between">
-                <strong class="d-block text-gray-dark"><UserDisplay user={profile} /></strong>
-                {profile.follower_count}
+    return <div class="col-md-6">
+        <div class="card flex-row p-2 mx-2 my-2 align-items-center">
+            <div class="card-image m-2">
+                <UserPicture user={profile} pictureSize="50px" />
             </div>
-            {profile.bio}
-        </p>
+            <div class="card-body"> {/* add a followed by.. section for people the user follows that follow the person */}
+                <UserDisplay user={profile} />
+                {profile.first_name} {profile.last_name} • <DisplayCount>{profile.follower_count}</DisplayCount> {profile.follower_count === 1 ? "follower" : "followers"}
+            </div>
+            <div class="d-flex flex-row card-right flex-grow-1 justify-content-end mx-2">
+                <a className='btn btn-primary' href={`/profile/${profile.username}`}>View profile</a>
+            </div>
+        </div>
     </div>
 }

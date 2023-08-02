@@ -1,5 +1,4 @@
 import {useEffect, useState} from 'react'
-import React from 'react'
 import {ProfileInfo} from './detail'
 import {apiProfileList} from './lookup'
 
@@ -23,9 +22,10 @@ export function ProfilesList(props) {
     }
     }, [setProfiles, profilesDidSet, setProfilesDidSet, props.query])
 
-    return <React.Fragment>{profiles.map((item, index)=>{ //iterates through list of profiles
+    return <div class="row">
+        {profiles.map((item, index)=>{ //iterates through list of profiles
         return <ProfileInfo profile={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-${item.id}`} /> //rendering profile
       })}
       {/* {nextUrl !== null && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load more...</button>} */}
-      </React.Fragment>
+      </div>
 }
