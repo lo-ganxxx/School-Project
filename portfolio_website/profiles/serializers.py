@@ -11,6 +11,7 @@ class PublicProfileSerializer(serializers.ModelSerializer):
     is_following = serializers.SerializerMethodField(read_only=True)
     post_count = serializers.SerializerMethodField(read_only=True)
     can_be_followed = serializers.SerializerMethodField(read_only=True)
+    common_followers = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = Profile
@@ -26,7 +27,8 @@ class PublicProfileSerializer(serializers.ModelSerializer):
             'username',
             'post_count',
             'picture',
-            'can_be_followed'
+            'can_be_followed',
+            'common_followers', #possibly make seperate serializers for different api lookups in future to make more efficient
             ]
     
     def get_is_following(self, obj):
@@ -48,6 +50,18 @@ class PublicProfileSerializer(serializers.ModelSerializer):
                     return("edit")
                 return("follow")
         return("login")
+    
+    def get_common_followers(self, obj):
+        context = self.context #getting context passed to serializer
+        request = context.get("request")
+        common_following = []
+        if request:
+            user = request.user
+            if user.is_authenticated: #if user logged in
+                for profile in user.following.all(): #for the profiles that logged in user follows
+                    if profile.user in obj.followers.all(): #if the profile they follow's user also follows the serialized profile
+                        common_following.append(profile.user.username) #add the username to common following list
+        return common_following
             
             
 
