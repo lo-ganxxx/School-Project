@@ -66,9 +66,9 @@ def profile_detail_api_view(request, username, *args, **kwargs):
 @api_view(['GET'])
 def profile_search_api_view(request, search_query, *args, **kwargs):
     #search_query = request.GET.get("q") #the search query is set as "q" under the query parameters
+    qs = Profile.objects.all() #all profile objects
     if len(search_query) > 0: #not searching for nothing
-        qs = Profile.objects.all() #all profile objects
         qs= qs.filter(user__username__icontains=search_query) #the profile's user's username has the search query in it (icontains -> not caps sensitive)
-        serializer = PublicProfileSerializer(qs, many=True, context={"request": request})
-        return Response(serializer.data, status=200)
-        #USE PAGINATED QUERYSET RESPONSE!
+    serializer = PublicProfileSerializer(qs, many=True, context={"request": request})
+    return Response(serializer.data, status=200)
+    #USE PAGINATED QUERYSET RESPONSE!
