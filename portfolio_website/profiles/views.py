@@ -50,3 +50,6 @@ def profile_detail_view(request, username, *args, **kwargs):
         "is_following": is_following
         }
     return render(request, "profiles/detail.html", context) #username is the username given in function argument
+
+def profile_search_view(request, query, *args, **kwargs):
+    return render(request, "profiles/search_results.html", context={"query": query})

@@ -22,10 +22,27 @@ export function ProfilesList(props) {
     }
     }, [setProfiles, profilesDidSet, setProfilesDidSet, props.query])
 
-    return <div class="row">
+    //if profiles were found and added to array
+    if (profiles.length > 0) { 
+        return <div class="row">
         {profiles.map((item, index)=>{ //iterates through list of profiles
         return <ProfileInfo profile={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-${item.id}`} /> //rendering profile
       })}
       {/* {nextUrl !== null && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load more...</button>} */}
       </div>
+    } else {
+        return <div class="d-flex justify-content-center p-3 rounded-3 shadow-lg">
+            <div>
+                  <strong class="d-block">No profiles found</strong>
+                  <small>We couldn't find any profiles similar to the name you searched</small>
+            </div>
+      </div>
+    }
+    
+    // return <div class="row">
+    //     {profiles.map((item, index)=>{ //iterates through list of profiles
+    //     return <ProfileInfo profile={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-${item.id}`} /> //rendering profile
+    //   })}
+    //   {/* {nextUrl !== null && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load more...</button>} */}
+    //   </div>
 }

@@ -12,3 +12,6 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['picture', 'location', 'bio']
+
+class ProfileSearchForm(forms.Form):
+    search_query = forms.CharField(max_length=150)
