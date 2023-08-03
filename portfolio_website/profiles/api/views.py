@@ -56,7 +56,7 @@ def profile_suggestions_api_view(request, *args, **kwargs):
     for profile in qs:
         serializer = PublicProfileSerializer(profile, context={"request": request}) #because common_followers is a serializermethodfield (not part of model itself)
         common_followers = serializer.get_common_followers(obj=profile) #function to get the common_followers list
-        if common_followers: #if there are any common followers
+        if common_followers and not serializer.get_is_following(obj=profile): #if there are any common followers and the user is not already following them
             suggested_profiles.append({"profile": profile, "common_followers_count": len(common_followers)})
     sorted_suggested_profiles = sorted(suggested_profiles, key=lambda profile_data: profile_data['common_followers_count'], reverse=True) #sorting suggested profiles by common followers count reversed (big to small), using lambda to get the value
     final_serializer = PublicProfileSerializer([profile_data['profile'] for profile_data in sorted_suggested_profiles], many=True, context={"request": request}) #has to set instance to [profile_data['profile'] for profile_data in sorted_suggested_profiles] with list comprehension as sorted_suggested_profiles is a list of dicts including both the profile and the common_followers_count

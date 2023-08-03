@@ -12,3 +12,7 @@ export function apiProfileFollowToggle(username, action, callback) {
 export function apiProfileList(search_query, callback) {
   backendLookup("GET", `/profile/search/${search_query}/`, callback)
 }
+
+export function apiSuggestedProfileList(callback) {
+  backendLookup("GET", `/profile/suggested/`, callback)
+}

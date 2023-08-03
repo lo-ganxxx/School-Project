@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {FeedComponent, PostsComponent, PostDetailComponent} from './posts';
-import {ProfileBadgeComponent, ProfilesList} from './profiles';
+import {ProfileBadgeComponent, ProfilesList, SuggestedProfilesList} from './profiles';
 
 // const cors = require('cors');
 // const corsOptions ={
@@ -65,6 +65,13 @@ if (profileSearchEl) {
   const postedProfileList = ReactDOM.createRoot(document.getElementById('posted-profile-search'))
   postedProfileList.render(
     e(ProfilesList, profileSearchEl.dataset)); //pass down dataset as well
+}
+
+const profileSuggestedEl = document.getElementById('posted-profile-suggested')
+if (profileSuggestedEl) {
+  const postedProfileSuggestedList = ReactDOM.createRoot(document.getElementById('posted-profile-suggested'))
+  postedProfileSuggestedList.render(
+    e(SuggestedProfilesList, profileSuggestedEl.dataset)); //pass down dataset as well
 }
 
 //const e = React.createElement //all below done all myself! had to change how done as react has changed since tutorial was published

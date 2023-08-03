@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
-import {ProfileInfo} from './detail'
-import {apiProfileList} from './lookup'
+import {ProfileSearchBadge, ProfileSuggestedBadge} from './detail'
+import {apiProfileList, apiSuggestedProfileList} from './lookup'
 
 export function ProfilesList(props) {
     const [profiles, setProfiles] = useState([]) //all profiles
@@ -26,7 +26,7 @@ export function ProfilesList(props) {
     if (profiles.length > 0) { 
         return <div class="row">
         {profiles.map((item, index)=>{ //iterates through list of profiles
-        return <ProfileInfo profile={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-${item.id}`} /> //rendering profile
+        return <ProfileSearchBadge profile={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-${item.id}`} /> //rendering profile
       })}
       {/* {nextUrl !== null && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load more...</button>} */}
       </div>
@@ -45,4 +45,30 @@ export function ProfilesList(props) {
     //   })}
     //   {/* {nextUrl !== null && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load more...</button>} */}
     //   </div>
+}
+
+export function SuggestedProfilesList(props) {
+    const [profiles, setProfiles] = useState([]) //all profiles
+    const [profilesDidSet, setProfilesDidSet] = useState(false) //used to prevent constant lookups
+    useEffect(() => {
+        if (profilesDidSet === false) {
+            const handleSuggestedProfileListLookup = (response, status) => { //callback for once the lookup gives a response and status
+            if (status === 200){
+                setProfiles(response) //updates profiles list component with response (query set items for that page)
+                setProfilesDidSet(true)
+            } else {
+                alert("There was an error")
+            }
+            }
+            apiSuggestedProfileList(handleSuggestedProfileListLookup)
+        }
+        }, [setProfiles, profilesDidSet, setProfilesDidSet])
+
+    return <div class="row">
+        <ul class="d-flex overflow-hidden">
+            {profiles.map((item, index)=>{ //iterates through list of profiles
+                return <ProfileSuggestedBadge profile={item} key={`${index}-${item.id}`} /> //rendering profile
+            })}
+        </ul>
+    </div>
 }
