@@ -71,7 +71,7 @@ export function SuggestedProfilesList(props) {
         setShowSuggested(false)
     }
 
-    if ((profiles.length > 0) && showSuggested) { 
+    if ((profiles.length > 0) && showSuggested) { //if there are any profiles in the array and the close suggested button hasnt been pressed
         return <div class="row">
             <div class="col-flex">
                 <span class="text-secondary float-start mb-2"><b>Suggested</b></span>
