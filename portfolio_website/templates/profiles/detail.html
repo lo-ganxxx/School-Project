@@ -4,7 +4,9 @@
 
 <div class="posted-profile-badge" data-username="{{ username }}"></div>
 
+{% if request.user.is_authenticated %}
 <div id="posted-profile-suggested"></div>
+{% endif %}
 
 <div id="posted"
 data-username="{{ username }}"
