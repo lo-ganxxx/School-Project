@@ -39,8 +39,8 @@ export function ProfileSuggestedBadge(props) {
         setProfileLoading(true)
         }
 
-    return <li class="list-group-item mx-2 my-2">
-        <div class="card flex-col p-2 ms-2 me-2 my-2 align-items-center" style={{height:'208px', width:'160px'}}>
+    return <li class="list-group-item mx-1">
+        <div class="card flex-col p-2 align-items-center" style={{height:'208px', width:'160px'}}>
             <div class="card-image mb-1 mt-3">
                 <UserPicture user={profile} pictureSize="54px" />
             </div>

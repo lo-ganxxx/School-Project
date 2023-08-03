@@ -50,6 +50,8 @@ export function ProfilesList(props) {
 export function SuggestedProfilesList(props) {
     const [profiles, setProfiles] = useState([]) //all profiles
     const [profilesDidSet, setProfilesDidSet] = useState(false) //used to prevent constant lookups
+    const [showSuggested, setShowSuggested] = useState(true)
+    
     useEffect(() => {
         if (profilesDidSet === false) {
             const handleSuggestedProfileListLookup = (response, status) => { //callback for once the lookup gives a response and status
@@ -63,12 +65,31 @@ export function SuggestedProfilesList(props) {
             apiSuggestedProfileList(handleSuggestedProfileListLookup)
         }
         }, [setProfiles, profilesDidSet, setProfilesDidSet])
+    
+    const handleCloseSuggested = (event) => {
+        event.preventDefault()
+        setShowSuggested(false)
+    }
 
-    return <div class="row">
-        <ul class="d-flex overflow-hidden">
-            {profiles.map((item, index)=>{ //iterates through list of profiles
-                return <ProfileSuggestedBadge profile={item} key={`${index}-${item.id}`} /> //rendering profile
-            })}
-        </ul>
-    </div>
+    if ((profiles.length > 0) && showSuggested) { 
+        return <div class="row">
+            <div class="col-flex">
+                <span class="text-secondary float-start mb-2"><b>Suggested</b></span>
+                <button class="btn btn-secondary p-1 lh-1 float-end" type="button" onClick={handleCloseSuggested}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                </svg>
+                </button>
+            </div>
+            <div class="row">
+                <ul class="d-flex overflow-auto justify-content-center">
+                    {profiles.map((item, index)=>{ //iterates through list of profiles
+                        return <ProfileSuggestedBadge profile={item} key={`${index}-${item.id}`} /> //rendering profile
+                    })}
+                </ul>
+            </div>
+        </div>
+    } else {
+        return null
+    }
 }
