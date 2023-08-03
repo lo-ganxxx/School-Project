@@ -50,8 +50,14 @@ def profile_search_api_view(request, search_query, *args, **kwargs):
     #USE PAGINATED QUERYSET RESPONSE!
 
 @api_view(['GET'])
-def profile_suggestions_api_view(request, qs, *args, **kwargs):
-    qs = qs.annotate(common_follower_count=Count('common_followers')).filter(
-    common_follower_count__gt=0) #if common followers count is greater than 0
-    serializer = PublicProfileSerializer(qs, many=True, context={"request": request})
-    return Response(serializer.data, status=200)
+def profile_suggestions_api_view(request, *args, **kwargs):
+    qs = Profile.objects.exclude(user=request.user) #all profile objects except user themself
+    suggested_profiles = []
+    for profile in qs:
+        serializer = PublicProfileSerializer(profile, context={"request": request}) #because common_followers is a serializermethodfield (not part of model itself)
+        common_followers = serializer.get_common_followers(obj=profile) #function to get the common_followers list
+        if common_followers: #if there are any common followers
+            suggested_profiles.append({"profile": profile, "common_followers_count": len(common_followers)})
+    sorted_suggested_profiles = sorted(suggested_profiles, key=lambda profile_data: profile_data['common_followers_count'], reverse=True) #sorting suggested profiles by common followers count reversed (big to small), using lambda to get the value
+    final_serializer = PublicProfileSerializer([profile_data['profile'] for profile_data in sorted_suggested_profiles], many=True, context={"request": request}) #has to set instance to [profile_data['profile'] for profile_data in sorted_suggested_profiles] with list comprehension as sorted_suggested_profiles is a list of dicts including both the profile and the common_followers_count
+    return Response(final_serializer.data, status=200)
