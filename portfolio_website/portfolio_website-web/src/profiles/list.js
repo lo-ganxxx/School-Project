@@ -74,7 +74,7 @@ export function SuggestedProfilesList(props) {
     if ((profiles.length > 0) && showSuggested) { //if there are any profiles in the array and the close suggested button hasnt been pressed
         return <div class="card row mt-3 p-2"> {/* without borders is just "row mt-3" */}
             <div class="col-flex">
-                <span class="text-secondary float-start mb-2"><b>Suggested</b></span>
+                <span class="text-secondary float-start mb-2"><b>Suggested for you</b></span>
                 <button class="btn btn-secondary p-1 lh-1 float-end" type="button" onClick={handleCloseSuggested}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
