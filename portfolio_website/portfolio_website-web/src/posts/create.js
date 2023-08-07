@@ -22,7 +22,7 @@ export function PostCreate(props) {
   }
   return <div className={props.className}> {/* Will only render if canPost is equal to true 'col-md-4 mx-auto col-10' */}
       <form onSubmit={handleSubmit}>
-        <textarea ref={textAreaRef} required={true} className='form-control' name='post'>
+        <textarea ref={textAreaRef} required={true} className='form-control' name='post' maxlength="240">
 
         </textarea>
         <button type='submit' className='btn btn-primary my-3'>Post</button>

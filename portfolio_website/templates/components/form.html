@@ -11,8 +11,18 @@
 
       {% for field in form %}
       <div class="form-floating">
-        <input type="{{ field.field.widget.input_type }}" class="form-control" id="floatingInput" placeholder="{{ field.label }}" name="{{ field.name }}" {% if field.value is not none %}value="{{ field.value }}"{% endif %}> {% comment %} value is the value that is in the input box by default when form loaded (field.value the fields current value for object that is being edited) only is set as an attribute if there is a field.value existing {% endcomment %}
+        <input type="{{ field.field.widget.input_type }}"
+        class="form-control"
+        id="floatingInput"
+        placeholder="{{ field.label }}"
+        name="{{ field.name }}"
+        {% if field.value %}value="{{ field.value }}"{% endif %}> {% comment %} value is the value that is in the input box by default when form loaded (field.value the fields current value for object that is being edited) only is set as an attribute if there is a field.value existing {% endcomment %}
         <label for="floatingInput">{{ field.label }}</label> {% comment %} the for="" associates it with the input box using id {% endcomment %}
+        {% if field.help_text %}
+        <small id="helpBlock" class="form-text text-muted">
+          {{ field.help_text }}
+        </small>
+        {% endif %}
       </div>
       {% endfor %}
 

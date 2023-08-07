@@ -79,7 +79,7 @@ export function Post(props) {
         {isDetail === true ? null : <button className='btn btn-outline-primary btn-sm' onClick={handleLink}>View</button>} {/* if isDetail is true it will render nothing (null) otherwise it will render the view button */}
         </div>
         {showCommentForm && <form onSubmit={handleCommentFormSubmit}>
-        <textarea ref={textAreaRef} required={true} className='form-control' name='comment'>
+        <textarea ref={textAreaRef} required={true} className='form-control' name='comment' maxlength="240">
 
         </textarea>
         <button type='submit' className='btn btn-secondary btn-small'>Submit</button>
