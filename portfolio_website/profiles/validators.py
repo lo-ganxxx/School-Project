@@ -7,3 +7,8 @@ def validate_file_size(value):
         raise ValidationError("You cannot upload files larger than 2mb")
     else:
         return value
+    
+def validate_instagram_username(value):
+    allowed_characters = set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.")
+    if not all(char in allowed_characters for char in value):
+        raise ValidationError("Invalid characters in Instagram username")

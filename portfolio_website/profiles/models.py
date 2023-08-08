@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
-from .validators import validate_file_size
+from .validators import validate_file_size, validate_instagram_username
 
 # Create your models here.
 
@@ -20,6 +20,8 @@ class Profile(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True) #most recent time it was saved
     followers = models.ManyToManyField(User, related_name="following", blank=True) #related name is "following" as from the followers perspective this profile is one they are folllowing i.e. user.following.all() -> all users a user follows
+    qualification = models.TextField(null=True, blank=True)
+    instagram_username = models.CharField(max_length=30, null=True, blank=True, validators=[validate_instagram_username])
     #occupation? qualifications?
 
 def user_did_save(sender, instance, created, *args, **kwargs):

@@ -11,7 +11,7 @@ class ProfileForm(forms.ModelForm):
     email_address = forms.CharField(required=False)
     class Meta:
         model = Profile
-        fields = ['picture', 'location', 'bio']
+        fields = ['picture', 'location', 'bio', 'qualification', 'instagram_username']
 
 class ProfileSearchForm(forms.Form):
     search_query = forms.CharField(max_length=150)
