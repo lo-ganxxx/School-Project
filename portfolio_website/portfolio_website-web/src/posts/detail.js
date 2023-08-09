@@ -37,6 +37,10 @@ export function Post(props) {
       event.preventDefault()
       window.location.href = `/${post.id}` //redirects user to post detail page of the post they clicked on (using the posts id)
     }
+    const handleReport = (event) => {
+      event.preventDefault()
+      apiPostReport(post.id, handleReport)
+    }
     const handlePerformAction = (newActionPost) => {
       setActionPost(newActionPost) //updates component
     }
@@ -72,11 +76,14 @@ export function Post(props) {
       </p>
       <p>{post.content} - {post.id}</p>
       {actionPost && <div>
+        <div className="d-flex justify-content-between align-items-center"> {/* puts content to either sides of the div */}
         <div className = 'btn btn-group px-0'>
         <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "like", display: "Likes"}}/>
         <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "unlike", display: "Unlike"}}/>
         <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "comment", display: "Comment"}} didCommentForm={handleCommentFormRender}/>
         {isDetail === true ? null : <button className='btn btn-outline-primary btn-sm' onClick={handleLink}>View</button>} {/* if isDetail is true it will render nothing (null) otherwise it will render the view button */}
+        </div>
+        <button type='submit' className='btn btn-danger btn-small' onClick={handleReport}>Report</button>
         </div>
         {showCommentForm && <form onSubmit={handleCommentFormSubmit}>
         <textarea ref={textAreaRef} required={true} className='form-control' name='comment' maxlength="240">
