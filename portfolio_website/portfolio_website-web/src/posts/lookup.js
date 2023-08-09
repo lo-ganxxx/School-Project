@@ -31,3 +31,7 @@ export function apiPostAction(postId, action, callback, content) {
     const data = {id: postId, action: action, content: content}
     backendLookup("POST", "/posts/action/", callback, data)
   }
+
+export function apiPostReport(postId, callback) {
+  backendLookup("POST", "/post/report/", callback, {id: postId})
+}

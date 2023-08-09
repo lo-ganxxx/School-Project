@@ -46,8 +46,9 @@ class Post(models.Model):
     #setting related_name means that i can easier find all posts related to a USER easier, rather than having to do i.e. user.post_set.all() to get all of a user's posts i can do user.posts.all()
     likes = models.ManyToManyField(User, related_name='post_user', blank=True, through=PostLike) #one post can have many users and many users can have many posts (in relation to likes) -- kind of as if for every like it creates a new object documenting that like and what user did it
     content = models.TextField(blank=True, null=True)
-    image = models.FileField(upload_to="images/", blank=True, null=True)
+    image = models.FileField(upload_to="post_pics/", blank=True, null=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    reports = models.IntegerField(default=0) #how many times has the post been reported
     #comments = models.ManyToManyField(User, related_name="post_commented_on", blank=True, through=PostComment) #related_name field lets you access foreign keys defined in your Django models backwards - e.g. you could find all comments by doing
 
     objects = PostManager() #extends default model manager

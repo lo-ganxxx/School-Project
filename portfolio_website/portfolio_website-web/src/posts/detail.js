@@ -2,7 +2,7 @@ import {useState, createRef} from 'react'
 
 import {ActionBtn} from './buttons'
 import {UserDisplay, UserPicture} from '../profiles'
-import {apiPostAction} from './lookup'
+import {apiPostAction, apiPostReport} from './lookup'
 
 export function Post(props) {
     const {post, miniPost, didComment} = props // This line extracts the post prop from the props object using destructuring assignment. It allows the component to access the post prop directly without having to reference props.post throughout the component.
