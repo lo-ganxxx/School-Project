@@ -15,6 +15,7 @@ export function Post(props) {
     const isDetail = `${post.id}` === `${urlPostId}`
     const [showCommentForm, setShowCommentForm] = useState(false) //comment form showing or not -- depends if comment button pressed in ActionButton component of action type comment
     const textAreaRef = createRef() //reference for the text area (used to access the value of the text area input)
+    const [isReportDisabled, setIsReportDisabled] = useState(false)
     const handleNewComment = (response, status) => {
       if (status === 201) { //if new comment was successfully created
         didComment(response) //triggers handleNewComment callback
@@ -39,7 +40,15 @@ export function Post(props) {
     }
     const handleReport = (event) => {
       event.preventDefault()
-      apiPostReport(post.id, handleReport)
+      apiPostReport(post.id, handleNewReport)
+    }
+    const handleNewReport = (response, status) => {
+      if (status === 200) { //if report was successful
+        setIsReportDisabled(true)
+      } else {
+        console.log(response)
+        alert("An error occured, please try again")
+      }
     }
     const handlePerformAction = (newActionPost) => {
       setActionPost(newActionPost) //updates component
@@ -83,7 +92,7 @@ export function Post(props) {
         <ActionBtn post={actionPost} didPerformAction={handlePerformAction} action={{type: "comment", display: "Comment"}} didCommentForm={handleCommentFormRender}/>
         {isDetail === true ? null : <button className='btn btn-outline-primary btn-sm' onClick={handleLink}>View</button>} {/* if isDetail is true it will render nothing (null) otherwise it will render the view button */}
         </div>
-        <button type='submit' className='btn btn-danger btn-small' onClick={handleReport}>Report</button>
+        <button type='submit' className='btn btn-danger btn-small' disabled={isReportDisabled} onClick={handleReport}>{isReportDisabled ? "Reported" : "Report"}</button>
         </div>
         {showCommentForm && <form onSubmit={handleCommentFormSubmit}>
         <textarea ref={textAreaRef} required={true} className='form-control' name='comment' maxlength="240">

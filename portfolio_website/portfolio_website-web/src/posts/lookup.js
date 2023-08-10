@@ -33,5 +33,5 @@ export function apiPostAction(postId, action, callback, content) {
   }
 
 export function apiPostReport(postId, callback) {
-  backendLookup("POST", "/post/report/", callback, {id: postId})
+  backendLookup("POST", `/posts/${postId}/report/`, callback)
 }

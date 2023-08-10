@@ -77,6 +77,17 @@ def post_delete_view(request, post_id, *args, **kwargs):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
+def post_report_view(request, post_id, *args, **kwargs):
+    qs = Post.objects.filter(id=post_id)
+    if not qs.exists():
+        return Response({}, status=404)
+    obj = qs.first()
+    obj.reports = obj.reports + 1
+    serializer = PostSerializer(obj)
+    return Response(serializer.data, status=200)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def post_action_view(request, *args, **kwargs):
     '''
     id is required.
