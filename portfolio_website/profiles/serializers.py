@@ -21,6 +21,7 @@ class PublicProfileSerializer(serializers.ModelSerializer):
             'id',
             'location',
             'bio',
+            'qualification',
             'follower_count',
             'following_count',
             'is_following',
@@ -28,7 +29,8 @@ class PublicProfileSerializer(serializers.ModelSerializer):
             'post_count',
             'picture',
             'can_be_followed',
-            'common_followers', #possibly make seperate serializers for different api lookups in future to make more efficient
+            'common_followers',
+            'instagram_username', #possibly make seperate serializers for different api lookups in future to make more efficient
             ]
     
     def get_is_following(self, obj):

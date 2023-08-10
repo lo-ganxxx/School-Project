@@ -12,6 +12,12 @@ code {
     monospace;
 }
 
+/* makes it so cursor changes to pointer (so users know the component links to something) */
 .pointer {
   cursor: pointer !important;
+}
+
+/* stops text overflow on long words */
+.overflow-wrap-break-word {
+  overflow-wrap: break-word !important; 
 }
