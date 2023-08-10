@@ -82,7 +82,8 @@ def post_report_view(request, post_id, *args, **kwargs):
     if not qs.exists():
         return Response({}, status=404)
     obj = qs.first()
-    obj.reports = obj.reports + 1
+    obj.reports += 1
+    obj.save()
     serializer = PostSerializer(obj)
     return Response(serializer.data, status=200)
 

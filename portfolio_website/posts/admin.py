@@ -11,7 +11,7 @@ class PostCommentAdmin(admin.TabularInline):
 
 class PostAdmin(admin.ModelAdmin):
     inlines = [PostLikeAdmin, PostCommentAdmin]
-    list_display = ['__str__', 'user', 'content']
+    list_display = ['__str__', 'user', 'reports', 'content']
     search_fields = ['content', 'user__username', 'user__email']
     class Meta:
         model = Post
