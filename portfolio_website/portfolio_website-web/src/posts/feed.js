@@ -48,9 +48,48 @@ export function FeedList(props) {
       window.location.href = `/${response.post}` //redirects user to post detail page of the post they commented on (using the posts id)
     }
 
-    return <React.Fragment>{posts.map((item, index)=>{ //iterates through list of posts
-      return <Post post={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-${item.id}`} didComment={handleNewComment} /> //rendering post
-    })}
-    {nextUrl !== null && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load more...</button>}
-    </React.Fragment>
+    if (posts.length > 0) {
+      return <React.Fragment>{posts.map((item, index)=>{ //iterates through list of posts
+        return <Post post={item} className='my-5 py-5 border bg-white text-dark' key={`${index}-${item.id}`} didComment={handleNewComment} /> //rendering post
+      })}
+      {nextUrl !== null && <button onClick={handleLoadNext} className='btn btn-outline-primary'>Load more...</button>}
+      </React.Fragment>
+    } else {
+      return <div>
+      <div class="d-flex justify-content-center p-3 rounded-3 shadow-lg">
+            <div>
+                  <strong class="d-block">No posts found</strong>
+                  <small>To get some posts in your feed, simply follow a profile or make a post yourself</small>
+            </div>
+      </div>
+      <div class="row mb-2 my-2">
+    <div class="col-md-6">
+      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-primary-emphasis">Suggested</strong>
+          <h3 class="mb-0">Global posts</h3>
+          <div class="mb-1 text-body-secondary">Most recent posts from around the globe</div>
+          <p class="card-text mb-auto">Gain access to a diverse array of job posts, discussions, and insights from job seekers and employers around the globe. Unearth opportunities that align with your aspirations and meet all kinds of new people.</p>
+          <a href="/global/" class="icon-link gap-1 icon-link-hover stretched-link">
+            Browse global posts
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <strong class="d-inline-block mb-2 text-primary-emphasis">Suggested</strong>
+          <h3 class="mb-0">Popular profiles</h3>
+          <div class="mb-1 text-body-secondary">The top followed profiles on Posted</div>
+          <p class="mb-auto">Unlock access to profiles of industry experts, thought leaders, and trailblazers who are making waves in their respective fields. Gain insights from their experiences and learn from the best.</p>
+          <a href="/profile/logan/" class="icon-link gap-1 icon-link-hover stretched-link">
+            Browse popular profiles
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+      </div>
+    }
   }

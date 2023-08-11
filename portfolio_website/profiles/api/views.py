@@ -61,3 +61,10 @@ def profile_suggestions_api_view(request, *args, **kwargs):
     sorted_suggested_profiles = sorted(suggested_profiles, key=lambda profile_data: profile_data['common_followers_count'], reverse=True) #sorting suggested profiles by common followers count reversed (big to small), using lambda to get the value
     final_serializer = PublicProfileSerializer([profile_data['profile'] for profile_data in sorted_suggested_profiles], many=True, context={"request": request}) #has to set instance to [profile_data['profile'] for profile_data in sorted_suggested_profiles] with list comprehension as sorted_suggested_profiles is a list of dicts including both the profile and the common_followers_count
     return Response(final_serializer.data, status=200)
+
+@api_view(['GET'])
+def profile_popular_api_view(request, *args, **kwargs):
+    qs = Profile.objects.exclude(user=request.user) #all profile objects except user themself
+    qs = sorted(qs, key=lambda profile: profile.followers.count(), reverse=True) #order from most followers to least
+    serializer = PublicProfileSerializer(qs, many=True, context={"request": request})
+    return Response(serializer.data, status=200)
