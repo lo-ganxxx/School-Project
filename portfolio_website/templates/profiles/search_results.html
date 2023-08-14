@@ -2,6 +2,14 @@
 
 {% block content %}
 
-<div id="posted-profile-search" data-query="{{ query }}"></div>
+{% if query %}
+
+<div id="posted-profile-list" data-query="{{ query }}"></div>
+
+{% else %}
+
+<div id="posted-profile-list"></div>
+
+{% endif %}
 
 {% endblock content %}

@@ -12,6 +12,10 @@ export function apiProfileFollowToggle(username, action, callback) {
 export function apiProfileList(search_query, callback) {
   backendLookup("GET", `/profile/search/${search_query}/`, callback)
 }
+//make placeholder accounts so if someone names themselves popular,etc there is no error!
+export function apiPopularProfileList(callback) {
+  backendLookup("GET", `/profile/popular/`, callback)
+}
 
 export function apiSuggestedProfileList(callback) {
   backendLookup("GET", `/profile/suggested/`, callback)

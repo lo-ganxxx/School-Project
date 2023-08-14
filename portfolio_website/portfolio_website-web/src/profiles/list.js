@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import {ProfileSearchBadge, ProfileSuggestedBadge} from './detail'
-import {apiProfileList, apiSuggestedProfileList} from './lookup'
+import {apiProfileList, apiPopularProfileList, apiSuggestedProfileList} from './lookup'
 
 export function ProfilesList(props) {
     const [profiles, setProfiles] = useState([]) //all profiles
@@ -18,7 +18,11 @@ export function ProfilesList(props) {
             alert("There was an error")
         }
         }
-        apiProfileList(props.query, handleProfileListLookup)
+        if (props.query){
+            apiProfileList(props.query, handleProfileListLookup)
+        } else { //if no query is set just get all profiles in order from most followers to least
+        apiPopularProfileList(handleProfileListLookup)
+        }
     }
     }, [setProfiles, profilesDidSet, setProfilesDidSet, props.query])
 

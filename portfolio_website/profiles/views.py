@@ -55,3 +55,6 @@ def profile_detail_view(request, username, *args, **kwargs):
 
 def profile_search_view(request, query, *args, **kwargs):
     return render(request, "profiles/search_results.html", context={"query": query})
+
+def profile_popular_view(request, *args, **kwargs):
+    return render(request, "profiles/search_results.html")

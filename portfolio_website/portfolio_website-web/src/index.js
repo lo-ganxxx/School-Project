@@ -60,11 +60,11 @@ if (postFeedEl) {
     e(FeedComponent, postFeedEl.dataset)); //pass down dataset as well
 }
 
-const profileSearchEl = document.getElementById('posted-profile-search')
-if (profileSearchEl) {
-  const postedProfileList = ReactDOM.createRoot(document.getElementById('posted-profile-search'))
+const profileListEl = document.getElementById('posted-profile-list')
+if (profileListEl) {
+  const postedProfileList = ReactDOM.createRoot(document.getElementById('posted-profile-list'))
   postedProfileList.render(
-    e(ProfilesList, profileSearchEl.dataset)); //pass down dataset as well
+    e(ProfilesList, profileListEl.dataset)); //pass down dataset as well
 }
 
 const profileSuggestedEl = document.getElementById('posted-profile-suggested')

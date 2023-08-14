@@ -83,7 +83,7 @@ export function FeedList(props) {
           <h3 class="mb-0">Popular profiles</h3>
           <div class="mb-1 text-body-secondary">The top followed profiles on Posted</div>
           <p class="mb-auto">Unlock access to profiles of industry experts, thought leaders, and trailblazers who are making waves in their respective fields. Gain insights from their experiences and learn from the best.</p>
-          <a href="/profile/logan/" class="icon-link gap-1 icon-link-hover stretched-link">
+          <a href="/profile/popular" class="icon-link gap-1 icon-link-hover stretched-link">
             Browse popular profiles
           </a>
         </div>
