@@ -39,7 +39,7 @@ export function ProfileSuggestedBadge(props) {
         setProfileLoading(true)
         }
 
-    return (window.location.pathname === `/profile/${profile.username}`) ? null : <li class="list-group-item mx-1"> {/* if the users profile is currently being viewed it will not suggest to follow that user */}
+    return <li class="list-group-item mx-1">
         <div class="card flex-col p-2 align-items-center" style={{height:'208px', width:'160px'}}>
             <div class="card-image mb-1 mt-3">
                 <UserPicture user={profile} pictureSize="54px" />

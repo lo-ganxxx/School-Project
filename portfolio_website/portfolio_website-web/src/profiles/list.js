@@ -74,8 +74,12 @@ export function SuggestedProfilesList(props) {
         event.preventDefault()
         setShowSuggested(false)
     }
+    const filteredProfiles = profiles.filter(profile => {
+        const profileUrl = `/profile/${profile.username}` //if the users profile is currently being viewed
+        return window.location.pathname !== profileUrl //will filter it out if it returns false
+    })
 
-    if ((profiles.length > 0) && showSuggested) { //if there are any profiles in the array and the close suggested button hasnt been pressed
+    if ((filteredProfiles.length > 0) && showSuggested) { //if there are any profiles in the array and the close suggested button hasnt been pressed
         return <div class="card row mt-3 p-2"> {/* without borders is just "row mt-3" */}
             <div class="col-flex">
                 <span class="text-secondary float-start mb-2"><b>Suggested for you</b></span>
@@ -87,7 +91,7 @@ export function SuggestedProfilesList(props) {
             </div>
             <div class="row">
                 <ul class="d-flex overflow-auto justify-content-center">
-                    {profiles.map((item, index)=>{ //iterates through list of profiles
+                    {filteredProfiles.map((item, index)=>{ //iterates through list of profiles
                         return <ProfileSuggestedBadge profile={item} key={`${index}-${item.id}`} /> //rendering profile
                     })}
                 </ul>
