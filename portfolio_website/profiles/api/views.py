@@ -64,7 +64,7 @@ def profile_suggestions_api_view(request, *args, **kwargs):
 
 @api_view(['GET'])
 def profile_popular_api_view(request, *args, **kwargs):
-    qs = Profile.objects.exclude(user=request.user) #all profile objects except user themself
+    qs = Profile.objects.all() #all profile objects
     qs = sorted(qs, key=lambda profile: profile.followers.count(), reverse=True) #order from most followers to least
     serializer = PublicProfileSerializer(qs, many=True, context={"request": request})
     return Response(serializer.data, status=200)
