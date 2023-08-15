@@ -44,6 +44,7 @@ urlpatterns = [
     path('profile/', include('profiles.urls')),
     path('api/posts/', include('posts.api.urls')),
     path('api/profile/', include('profiles.api.urls')),
+    path('ourstory/', TemplateView.as_view(template_name='pages/ourstory.html')) #renders template directly rather than a view
 ]
 
 if settings.DEBUG:
