@@ -27,7 +27,7 @@ from accounts.views import (
 )
 
 from posts.views import (
-    home_view,
+    home_view, #changed to go through register view
     posts_list_view,
     posts_detail_view,
 )

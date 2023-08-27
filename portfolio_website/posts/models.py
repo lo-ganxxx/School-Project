@@ -57,11 +57,3 @@ class Post(models.Model):
         return "Post ID: " + str(self.id)
     class Meta:
         ordering = ['-id']
-
-    # def serialize(self):
-    #     return {
-    #         "id": self.id,
-    #         "content": self.content,
-    #         "likes": self.likes.count(),
-    #         "creator": self.user.username
-    #     } not needed anymore
