@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from .forms import ProfileForm
 from .models import Profile
 
-def profile_update_view(request, *args, **kwargs):
+def profile_update_view(request, *args, **kwargs): #handles updating a user's profile information - validates and saves changes to both the user model and associated profile model (if any made) and renders the form to edit the profile data
     if not request.user.is_authenticated: #not logged in
         return redirect("/login?next=/profile/edit") #redirect to login page and set argument for next
     user = request.user
@@ -37,7 +37,7 @@ def profile_update_view(request, *args, **kwargs):
     }
     return render(request, "profiles/form.html", context)
 
-def profile_detail_view(request, username, *args, **kwargs):
+def profile_detail_view(request, username, *args, **kwargs): #renders the user profile page with follower status for a specified username
     #get the profile for the passed username
     qs = Profile.objects.filter(user__username=username)
     if not qs.exists():
@@ -53,8 +53,8 @@ def profile_detail_view(request, username, *args, **kwargs):
         }
     return render(request, "profiles/detail.html", context) #username is the username given in function argument
 
-def profile_search_view(request, query, *args, **kwargs):
+def profile_search_view(request, query, *args, **kwargs): #renders the search results for a specific query
     return render(request, "profiles/search_results.html", context={"query": query})
 
-def profile_popular_view(request, *args, **kwargs):
+def profile_popular_view(request, *args, **kwargs): #renders the popular profiles page
     return render(request, "profiles/search_results.html")

@@ -7,12 +7,12 @@ from .validators import validate_file_size, validate_instagram_username
 
 User = settings.AUTH_USER_MODEL
 
-class FollowerRelation(models.Model):
+class FollowerRelation(models.Model): #model for follower relation between a user and a profile
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     profile = models.ForeignKey("Profile", on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
 
-class Profile(models.Model):
+class Profile(models.Model): #model for profile
     user = models.OneToOneField(User, on_delete=models.CASCADE) #one user associated with one profile, one profile associated with one user
     picture = models.ImageField(upload_to='profile_pics/', null=True, blank=True, validators=[validate_file_size]) #validator checks file size
     location = models.CharField(max_length=100, null=True, blank=True)
@@ -24,7 +24,7 @@ class Profile(models.Model):
     instagram_username = models.CharField(max_length=30, null=True, blank=True, validators=[validate_instagram_username])
     #occupation? qualifications?
 
-def user_did_save(sender, instance, created, *args, **kwargs):
+def user_did_save(sender, instance, created, *args, **kwargs): #creates profile for new users
     if created:
         Profile.objects.get_or_create(user=instance) #get profile object if it exists for that user or create it if not
 

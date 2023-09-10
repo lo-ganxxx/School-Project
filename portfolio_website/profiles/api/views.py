@@ -19,7 +19,7 @@ User = get_user_model()
 # Create your views here.
 
 @api_view(['GET', 'POST'])
-def profile_detail_api_view(request, username, *args, **kwargs):
+def profile_detail_api_view(request, username, *args, **kwargs): #performs a follow/unfollow action on a specific profile (identified by given username) if the request method is POST and returns serialized data for this profile (for GET and POST method)
     #get the profile for the passed username
     qs = Profile.objects.filter(user__username=username)
     if not qs.exists():
@@ -40,8 +40,7 @@ def profile_detail_api_view(request, username, *args, **kwargs):
     return Response(serializer.data, status=200) #username is the username given in function argument
 
 @api_view(['GET'])
-def profile_search_api_view(request, search_query, *args, **kwargs):
-    #search_query = request.GET.get("q") #the search query is set as "q" under the query parameters
+def profile_search_api_view(request, search_query, *args, **kwargs): #handles a GET request to filter and retrieve profiles whose username contain the search query and then returns serialized data for the matching profiles
     qs = Profile.objects.all() #all profile objects
     if len(search_query) > 0: #not searching for nothing
         qs= qs.filter(user__username__icontains=search_query) #the profile's user's username has the search query in it (icontains -> not caps sensitive)
@@ -50,7 +49,7 @@ def profile_search_api_view(request, search_query, *args, **kwargs):
     #USE PAGINATED QUERYSET RESPONSE!
 
 @api_view(['GET'])
-def profile_suggestions_api_view(request, *args, **kwargs):
+def profile_suggestions_api_view(request, *args, **kwargs): #retrieves profiles that are not the request user, identifies profiles with common followers (profiles that are followed by users the request user follows) and sorts the suggestions by the count of common followers in descending order then returns serialized data for the suggest profiles
     qs = Profile.objects.exclude(user=request.user) #all profile objects except user themself
     suggested_profiles = []
     for profile in qs:
@@ -63,7 +62,7 @@ def profile_suggestions_api_view(request, *args, **kwargs):
     return Response(final_serializer.data, status=200)
 
 @api_view(['GET'])
-def profile_popular_api_view(request, *args, **kwargs):
+def profile_popular_api_view(request, *args, **kwargs): #returns serialized data for all profiles in order from most followers to least
     qs = Profile.objects.all() #all profile objects
     qs = sorted(qs, key=lambda profile: profile.followers.count(), reverse=True) #order from most followers to least
     serializer = PublicProfileSerializer(qs, many=True, context={"request": request})
